@@ -1,0 +1,7 @@
+# 本地私密配置（含推广位/Key，不上传）
+.env
+
+# 运行时数据
+node_modules/
+server/data/events.jsonl
+.DS_Store

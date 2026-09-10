@@ -1,0 +1,12 @@
+{
+  "name": "wheel-lunch",
+  "version": "1.0.0",
+  "private": true,
+  "description": "转转点餐 · 福利点餐小工具 MVP（随机转盘 + 附近可下单店铺 + 一键下单）",
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

@@ -1,0 +1,417 @@
+{
+  "meta": {
+    "addresses": [
+      { "id": "z-guomao", "name": "国贸CBD", "detail": "北京市朝阳区 · 建国门外大街1号", "lat": 39.9087, "lng": 116.4614 },
+      { "id": "z-wangjing", "name": "望京SOHO", "detail": "北京市朝阳区 · 望京街10号", "lat": 39.9957, "lng": 116.4808 },
+      { "id": "z-zgc", "name": "中关村", "detail": "北京市海淀区 · 中关村大街27号", "lat": 39.9847, "lng": 116.3059 }
+    ],
+    "avoidTags": ["辣", "花生", "牛肉", "猪肉", "海鲜", "蛋奶"]
+  },
+  "shops": [
+    {
+      "id": "s001", "name": "蜀香居·川味小炒", "short": "蜀香居", "emoji": "🌶️", "cuisine": "川菜",
+      "rating": 4.6, "monthlySales": 3200, "avgPrice": 32, "isNew": false,
+      "zone": "国贸CBD", "address": "国贸商城西区B1层 B-12",
+      "lat": 39.9095, "lng": 116.4630, "openTime": "10:00", "closeTime": "21:00",
+      "deliveryFee": 3.5, "minOrder": 20, "deliveryMinutes": 32,
+      "license": "JY11105010012345", "tags": ["辣", "花生"],
+      "dishes": [
+        { "id": "s001-1", "name": "宫保鸡丁饭", "price": 26, "desc": "经典川味，花生香脆", "isSignature": true },
+        { "id": "s001-2", "name": "麻婆豆腐饭", "price": 24, "desc": "麻辣鲜香，下饭神器", "isSignature": false },
+        { "id": "s001-3", "name": "回锅肉盖饭", "price": 28, "desc": "二刀肉配蒜苗，锅气十足", "isSignature": false },
+        { "id": "s001-4", "name": "酸菜鱼套餐", "price": 42, "desc": "鱼片嫩滑，配米饭小菜", "isSignature": false },
+        { "id": "s001-5", "name": "红糖冰粉", "price": 6, "desc": "手工冰粉，解辣必备", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s002", "name": "满丼屋·日式烧肉饭", "short": "满丼屋", "emoji": "🍱", "cuisine": "日料",
+      "rating": 4.7, "monthlySales": 2100, "avgPrice": 45, "isNew": false,
+      "zone": "国贸CBD", "address": "国贸商城北区6层 6-08",
+      "lat": 39.9076, "lng": 116.4590, "openTime": "10:30", "closeTime": "21:30",
+      "deliveryFee": 4, "minOrder": 20, "deliveryMinutes": 28,
+      "license": "JY11105010023456", "tags": [],
+      "dishes": [
+        { "id": "s002-1", "name": "唐扬鸡块丼", "price": 32, "desc": "外酥里嫩，配照烧汁", "isSignature": true },
+        { "id": "s002-2", "name": "牛舌烧肉丼", "price": 45, "desc": "厚切牛舌，炭火香气", "isSignature": false },
+        { "id": "s002-3", "name": "三文鱼亲子丼", "price": 38, "desc": "现切三文鱼配温泉蛋", "isSignature": false },
+        { "id": "s002-4", "name": "味噌豆腐汤", "price": 8, "desc": "日式家常味", "isSignature": false },
+        { "id": "s002-5", "name": "抹茶大福", "price": 12, "desc": "软糯微苦回甘", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s003", "name": "轻叶沙拉·能量轻食碗", "short": "轻叶沙拉", "emoji": "🥗", "cuisine": "轻食",
+      "rating": 4.5, "monthlySales": 980, "avgPrice": 38, "isNew": true,
+      "zone": "国贸CBD", "address": "国贸三期B1层 轻食区",
+      "lat": 39.9102, "lng": 116.4648, "openTime": "09:00", "closeTime": "20:00",
+      "deliveryFee": 3, "minOrder": 15, "deliveryMinutes": 26,
+      "license": "JY11105010034567", "tags": ["海鲜"],
+      "dishes": [
+        { "id": "s003-1", "name": "经典凯撒鸡胸碗", "price": 32, "desc": "低脂高蛋白", "isSignature": true },
+        { "id": "s003-2", "name": "牛油果虾仁碗", "price": 45, "desc": "大块牛油果配虾仁", "isSignature": false },
+        { "id": "s003-3", "name": "藜麦素食能量碗", "price": 29, "desc": "五彩蔬果配藜麦", "isSignature": false },
+        { "id": "s003-4", "name": "烟熏三文鱼帕尼尼", "price": 35, "desc": "微焦面包夹烟熏味", "isSignature": false },
+        { "id": "s003-5", "name": "鲜榨橙汁", "price": 15, "desc": "无添加现榨", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s004", "name": "金桥兰州牛肉面", "short": "兰州拉面", "emoji": "🍜", "cuisine": "面食",
+      "rating": 4.3, "monthlySales": 5600, "avgPrice": 24, "isNew": false,
+      "zone": "国贸CBD", "address": "金桥大厦1层 102",
+      "lat": 39.9058, "lng": 116.4588, "openTime": "08:00", "closeTime": "21:00",
+      "deliveryFee": 2.5, "minOrder": 15, "deliveryMinutes": 30,
+      "license": "JY11105010045678", "tags": ["牛肉"],
+      "dishes": [
+        { "id": "s004-1", "name": "牛肉面（二细）", "price": 22, "desc": "一清二白三红四绿", "isSignature": true },
+        { "id": "s004-2", "name": "牛肉拌面", "price": 24, "desc": "干拌更浓香", "isSignature": false },
+        { "id": "s004-3", "name": "羊肉泡馍", "price": 32, "desc": "汤浓馍筋", "isSignature": false },
+        { "id": "s004-4", "name": "卤蛋", "price": 3, "desc": "入味卤制", "isSignature": false },
+        { "id": "s004-5", "name": "凉拌三丝", "price": 10, "desc": "开胃小菜", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s005", "name": "椒麻小烫·麻辣烫", "short": "椒麻小烫", "emoji": "🍲", "cuisine": "麻辣烫",
+      "rating": 4.2, "monthlySales": 4300, "avgPrice": 28, "isNew": false,
+      "zone": "国贸CBD", "address": "建外SOHO西区 3-055",
+      "lat": 39.9099, "lng": 116.4598, "openTime": "00:00", "closeTime": "23:59",
+      "deliveryFee": 3, "minOrder": 15, "deliveryMinutes": 35,
+      "license": "JY11105010056789", "tags": ["辣"],
+      "dishes": [
+        { "id": "s005-1", "name": "自选麻辣烫（500g）", "price": 25, "desc": "骨汤锅底，自选菜", "isSignature": true },
+        { "id": "s005-2", "name": "番茄锅底", "price": 8, "desc": "酸甜开胃不辣", "isSignature": false },
+        { "id": "s005-3", "name": "秘制麻酱", "price": 4, "desc": "浓稠香醇", "isSignature": false },
+        { "id": "s005-4", "name": "炸串拼盘", "price": 15, "desc": "外酥里嫩", "isSignature": false },
+        { "id": "s005-5", "name": "冰镇酸梅汤", "price": 6, "desc": "解辣神器", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s006", "name": "湘聚楼·湖南土菜", "short": "湘聚楼", "emoji": "🥘", "cuisine": "湘菜",
+      "rating": 4.5, "monthlySales": 1500, "avgPrice": 36, "isNew": false,
+      "zone": "国贸CBD", "address": "国贸朗琴大厦2层 201",
+      "lat": 39.9120, "lng": 116.4620, "openTime": "10:30", "closeTime": "21:00",
+      "deliveryFee": 3.5, "minOrder": 25, "deliveryMinutes": 38,
+      "license": "JY11105010067890", "tags": ["辣", "猪肉"],
+      "dishes": [
+        { "id": "s006-1", "name": "农家小炒肉饭", "price": 30, "desc": "螺丝椒配五花肉", "isSignature": true },
+        { "id": "s006-2", "name": "剁椒鱼头套餐", "price": 48, "desc": "湘味剁椒，鲜辣过瘾", "isSignature": false },
+        { "id": "s006-3", "name": "辣椒炒蛋饭", "price": 26, "desc": "家常下饭", "isSignature": false },
+        { "id": "s006-4", "name": "紫苏黄瓜", "price": 12, "desc": "紫苏香气独特", "isSignature": false },
+        { "id": "s006-5", "name": "例汤", "price": 0, "desc": "紫菜蛋花汤，随餐赠送", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s007", "name": "粥语·潮汕砂锅粥", "short": "粥语", "emoji": "🥣", "cuisine": "粥粉汤",
+      "rating": 4.4, "monthlySales": 2600, "avgPrice": 30, "isNew": false,
+      "zone": "国贸CBD", "address": "国贸银泰B1层 B-33",
+      "lat": 39.9070, "lng": 116.4655, "openTime": "09:00", "closeTime": "23:59",
+      "deliveryFee": 3, "minOrder": 18, "deliveryMinutes": 33,
+      "license": "JY11105010078901", "tags": ["海鲜"],
+      "dishes": [
+        { "id": "s007-1", "name": "皮蛋瘦肉粥", "price": 18, "desc": "绵软顺滑", "isSignature": true },
+        { "id": "s007-2", "name": "瑶柱鸡肉粥", "price": 26, "desc": "鲜味十足", "isSignature": false },
+        { "id": "s007-3", "name": "砂锅虾蟹粥", "price": 48, "desc": "膏蟹鲜虾同煮", "isSignature": false },
+        { "id": "s007-4", "name": "手打牛肉丸", "price": 15, "desc": "弹牙多汁", "isSignature": false },
+        { "id": "s007-5", "name": "潮汕菜脯蛋", "price": 14, "desc": "菜脯咸香", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s008", "name": "福记烧腊·粤式简餐", "short": "福记烧腊", "emoji": "🍗", "cuisine": "粤式",
+      "rating": 4.6, "monthlySales": 1900, "avgPrice": 34, "isNew": false,
+      "zone": "国贸CBD", "address": "国贸商城西区2层 2-16",
+      "lat": 39.9090, "lng": 116.4570, "openTime": "10:30", "closeTime": "20:30",
+      "deliveryFee": 3, "minOrder": 20, "deliveryMinutes": 27,
+      "license": "JY11105010089012", "tags": ["猪肉"],
+      "dishes": [
+        { "id": "s008-1", "name": "蜜汁叉烧饭", "price": 34, "desc": "半肥瘦叉烧，蜜香四溢", "isSignature": true },
+        { "id": "s008-2", "name": "烧鸭腿饭", "price": 32, "desc": "皮脆肉嫩", "isSignature": false },
+        { "id": "s008-3", "name": "白切鸡饭", "price": 28, "desc": "姜葱蓉点睛", "isSignature": false },
+        { "id": "s008-4", "name": "冻柠茶", "price": 10, "desc": "港式茶餐厅风味", "isSignature": false },
+        { "id": "s008-5", "name": "老火例汤", "price": 6, "desc": "每日现煲", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s009", "name": "卡乐星·炸鸡汉堡", "short": "卡乐星", "emoji": "🍔", "cuisine": "汉堡",
+      "rating": 4.1, "monthlySales": 3400, "avgPrice": 40, "isNew": false,
+      "zone": "国贸CBD", "address": "国贸商城东区B1层 F-02",
+      "lat": 39.9135, "lng": 116.4600, "openTime": "00:00", "closeTime": "23:59",
+      "deliveryFee": 4, "minOrder": 25, "deliveryMinutes": 40,
+      "license": "JY11105010090123", "tags": [],
+      "dishes": [
+        { "id": "s009-1", "name": "经典芝士牛肉堡", "price": 28, "desc": "现煎牛肉配芝士", "isSignature": true },
+        { "id": "s009-2", "name": "双层安格斯堡", "price": 45, "desc": "双层牛肉满足感", "isSignature": false },
+        { "id": "s009-3", "name": "香辣鸡腿堡", "price": 24, "desc": "外酥里嫩微辣", "isSignature": false },
+        { "id": "s009-4", "name": "薯条（大）", "price": 12, "desc": "现炸酥脆", "isSignature": false },
+        { "id": "s009-5", "name": "可乐", "price": 8, "desc": "冰爽畅饮", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s010", "name": "源味石锅拌饭", "short": "源味拌饭", "emoji": "🍚", "cuisine": "韩式",
+      "rating": 4.5, "monthlySales": 2800, "avgPrice": 35, "isNew": false,
+      "zone": "望京SOHO", "address": "望京SOHO T1 B1层 B-08",
+      "lat": 39.9965, "lng": 116.4792, "openTime": "10:30", "closeTime": "21:00",
+      "deliveryFee": 3, "minOrder": 20, "deliveryMinutes": 30,
+      "license": "JY11105010101234", "tags": ["海鲜"],
+      "dishes": [
+        { "id": "s010-1", "name": "石锅拌饭（牛肉）", "price": 32, "desc": "锅巴焦香，拌饭一绝", "isSignature": true },
+        { "id": "s010-2", "name": "泡菜五花肉石锅饭", "price": 34, "desc": "酸辣开胃", "isSignature": false },
+        { "id": "s010-3", "name": "海鲜豆腐汤", "price": 28, "desc": "嫩豆腐配鲜虾", "isSignature": false },
+        { "id": "s010-4", "name": "韩式炸鸡（半份）", "price": 26, "desc": "甜辣酱裹匀", "isSignature": false },
+        { "id": "s010-5", "name": "海带汤", "price": 8, "desc": "韩式家常", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s011", "name": "新宿食堂·日式定食", "short": "新宿食堂", "emoji": "🍣", "cuisine": "日料",
+      "rating": 4.8, "monthlySales": 1200, "avgPrice": 52, "isNew": true,
+      "zone": "望京SOHO", "address": "望京SOHO T3 2层 2-11",
+      "lat": 39.9948, "lng": 116.4825, "openTime": "11:00", "closeTime": "21:30",
+      "deliveryFee": 4.5, "minOrder": 30, "deliveryMinutes": 35,
+      "license": "JY11105010112345", "tags": ["海鲜"],
+      "dishes": [
+        { "id": "s011-1", "name": "唐扬鸡定食", "price": 38, "desc": "含味噌汤与小菜", "isSignature": true },
+        { "id": "s011-2", "name": "盐烤鲭花鱼定食", "price": 46, "desc": "皮焦肉嫩", "isSignature": false },
+        { "id": "s011-3", "name": "日式咖喱猪排饭", "price": 42, "desc": "猪排现炸酥脆", "isSignature": false },
+        { "id": "s011-4", "name": "茶碗蒸", "price": 10, "desc": "嫩滑蒸蛋", "isSignature": false },
+        { "id": "s011-5", "name": "日式煎饺", "price": 12, "desc": "三只装，底脆汁多", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s012", "name": "面面俱到·刀削面", "short": "面面俱到", "emoji": "🍜", "cuisine": "面食",
+      "rating": 4.2, "monthlySales": 3900, "avgPrice": 22, "isNew": false,
+      "zone": "望京SOHO", "address": "望京小街8号院 1层",
+      "lat": 39.9972, "lng": 116.4830, "openTime": "07:30", "closeTime": "20:30",
+      "deliveryFee": 2.5, "minOrder": 12, "deliveryMinutes": 25,
+      "license": "JY11105010123456", "tags": [],
+      "dishes": [
+        { "id": "s012-1", "name": "刀削面（西红柿鸡蛋）", "price": 18, "desc": "家常浇头", "isSignature": true },
+        { "id": "s012-2", "name": "牛肉刀削面", "price": 26, "desc": "大块牛肉", "isSignature": false },
+        { "id": "s012-3", "name": "炸酱面", "price": 20, "desc": "老北京风味", "isSignature": false },
+        { "id": "s012-4", "name": "凉拌黄瓜", "price": 8, "desc": "清脆爽口", "isSignature": false },
+        { "id": "s012-5", "name": "卤豆干", "price": 5, "desc": "五香入味", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s013", "name": "绿野轻食·能量碗", "short": "绿野轻食", "emoji": "🥗", "cuisine": "轻食",
+      "rating": 4.4, "monthlySales": 760, "avgPrice": 42, "isNew": true,
+      "zone": "望京SOHO", "address": "望京SOHO T2 B1层 B-15",
+      "lat": 39.9940, "lng": 116.4780, "openTime": "09:30", "closeTime": "19:30",
+      "deliveryFee": 3.5, "minOrder": 20, "deliveryMinutes": 28,
+      "license": "JY11105010134567", "tags": ["花生"],
+      "dishes": [
+        { "id": "s013-1", "name": "香煎鸡胸能量碗", "price": 36, "desc": "粗粮基底，饱腹感强", "isSignature": true },
+        { "id": "s013-2", "name": "牛肉藜麦碗", "price": 48, "desc": "优质蛋白", "isSignature": false },
+        { "id": "s013-3", "name": "花生酱鸡肉卷", "price": 30, "desc": "微甜花生酱", "isSignature": false },
+        { "id": "s013-4", "name": "羽衣甘蓝果汁", "price": 18, "desc": "轻体首选", "isSignature": false },
+        { "id": "s013-5", "name": "希腊酸奶碗", "price": 12, "desc": "浓稠无糖", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s014", "name": "旺顺阁·鱼头泡饼", "short": "旺顺阁", "emoji": "🐟", "cuisine": "家常菜",
+      "rating": 4.6, "monthlySales": 890, "avgPrice": 58, "isNew": false,
+      "zone": "望京SOHO", "address": "望京凯德MALL 4层 4-06",
+      "lat": 39.9969, "lng": 116.4770, "openTime": "10:30", "closeTime": "21:00",
+      "deliveryFee": 4, "minOrder": 40, "deliveryMinutes": 42,
+      "license": "JY11105010145678", "tags": ["海鲜"],
+      "dishes": [
+        { "id": "s014-1", "name": "鱼头泡饼（小份）", "price": 68, "desc": "千岛湖鱼头配烙饼", "isSignature": true },
+        { "id": "s014-2", "name": "红烧带鱼饭", "price": 38, "desc": "咸鲜入味", "isSignature": false },
+        { "id": "s014-3", "name": "木须肉饭", "price": 30, "desc": "经典家常", "isSignature": false },
+        { "id": "s014-4", "name": "拍黄瓜", "price": 10, "desc": "蒜香清爽", "isSignature": false },
+        { "id": "s014-5", "name": "酸梅汤", "price": 8, "desc": "自家熬制", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s015", "name": "小辣椒·麻辣香锅", "short": "小辣椒", "emoji": "🌶️", "cuisine": "川菜",
+      "rating": 4.3, "monthlySales": 5100, "avgPrice": 45, "isNew": false,
+      "zone": "望京SOHO", "address": "望京西园三区 108栋底商",
+      "lat": 39.9935, "lng": 116.4840, "openTime": "11:00", "closeTime": "22:00",
+      "deliveryFee": 3.5, "minOrder": 30, "deliveryMinutes": 38,
+      "license": "JY11105010156789", "tags": ["辣"],
+      "dishes": [
+        { "id": "s015-1", "name": "麻辣香锅（500g）", "price": 42, "desc": "自选食材，微辣干香", "isSignature": true },
+        { "id": "s015-2", "name": "干锅土豆片", "price": 22, "desc": "越吃越香", "isSignature": false },
+        { "id": "s015-3", "name": "香锅牛肉加量", "price": 18, "desc": "肉食加码", "isSignature": false },
+        { "id": "s015-4", "name": "红糖冰粉", "price": 9, "desc": "冰凉解辣", "isSignature": false },
+        { "id": "s015-5", "name": "酸梅汤", "price": 8, "desc": "解腻首选", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s016", "name": "茶话弄·鲜果奶茶", "short": "茶话弄", "emoji": "🧋", "cuisine": "茶饮甜品",
+      "rating": 4.7, "monthlySales": 2300, "avgPrice": 20, "isNew": true,
+      "zone": "望京SOHO", "address": "望京SOHO T1 1层 1-03",
+      "lat": 39.9960, "lng": 116.4815, "openTime": "10:00", "closeTime": "22:00",
+      "deliveryFee": 2, "minOrder": 10, "deliveryMinutes": 20,
+      "license": "JY11105010167890", "tags": [],
+      "dishes": [
+        { "id": "s016-1", "name": "桂花乌龙奶茶", "price": 16, "desc": "茶底清雅桂花香", "isSignature": true },
+        { "id": "s016-2", "name": "多肉葡萄", "price": 20, "desc": "芝士奶盖配果肉", "isSignature": false },
+        { "id": "s016-3", "name": "黑糖珍珠鲜奶", "price": 18, "desc": "现熬黑糖", "isSignature": false },
+        { "id": "s016-4", "name": "柠檬绿冰茶", "price": 14, "desc": "清爽解腻", "isSignature": false },
+        { "id": "s016-5", "name": "布丁", "price": 6, "desc": "滑嫩", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s017", "name": "抄手人家·红油抄手", "short": "抄手人家", "emoji": "🥟", "cuisine": "小吃",
+      "rating": 4.4, "monthlySales": 3100, "avgPrice": 26, "isNew": false,
+      "zone": "望京SOHO", "address": "望京麒麟社 3层 305",
+      "lat": 39.9950, "lng": 116.4850, "openTime": "09:30", "closeTime": "21:00",
+      "deliveryFee": 2.5, "minOrder": 15, "deliveryMinutes": 26,
+      "license": "JY11105010178901", "tags": ["辣", "猪肉"],
+      "dishes": [
+        { "id": "s017-1", "name": "红油抄手（12只）", "price": 20, "desc": "红油香而不燥", "isSignature": true },
+        { "id": "s017-2", "name": "清汤抄手", "price": 18, "desc": "鲜美原味", "isSignature": false },
+        { "id": "s017-3", "name": "钟水饺", "price": 16, "desc": "甜辣蘸汁", "isSignature": false },
+        { "id": "s017-4", "name": "鸡丝凉面", "price": 14, "desc": "麻酱香浓", "isSignature": false },
+        { "id": "s017-5", "name": "手搓冰粉", "price": 8, "desc": "气泡丰富", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s018", "name": "食草记·素食简餐", "short": "食草记", "emoji": "🥬", "cuisine": "轻食",
+      "rating": 4.3, "monthlySales": 640, "avgPrice": 33, "isNew": false,
+      "zone": "望京SOHO", "address": "望京融科橄榄鹏 1层",
+      "lat": 39.9975, "lng": 116.4795, "openTime": "10:00", "closeTime": "20:00",
+      "deliveryFee": 3, "minOrder": 18, "deliveryMinutes": 24,
+      "license": "JY11105010189012", "tags": [],
+      "dishes": [
+        { "id": "s018-1", "name": "罗勒青酱意面", "price": 28, "desc": "素食也浓郁", "isSignature": true },
+        { "id": "s018-2", "name": "菌菇豆腐煲", "price": 26, "desc": "鲜味来自菌菇", "isSignature": false },
+        { "id": "s018-3", "name": "杂粮素食饭盒", "price": 30, "desc": "五谷杂粮均衡", "isSignature": false },
+        { "id": "s018-4", "name": "牛油果吐司", "price": 22, "desc": "开放式三明治", "isSignature": false },
+        { "id": "s018-5", "name": "银耳莲子羹", "price": 10, "desc": "温润养人", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s019", "name": "程序员食堂·东北家常菜", "short": "程序员食堂", "emoji": "🍖", "cuisine": "家常菜",
+      "rating": 4.5, "monthlySales": 4700, "avgPrice": 35, "isNew": false,
+      "zone": "中关村", "address": "中关村SOHO 2层 2-18",
+      "lat": 39.9855, "lng": 116.3070, "openTime": "10:30", "closeTime": "21:00",
+      "deliveryFee": 3, "minOrder": 20, "deliveryMinutes": 32,
+      "license": "JY11105010190123", "tags": ["猪肉"],
+      "dishes": [
+        { "id": "s019-1", "name": "锅包肉饭", "price": 32, "desc": "酸甜酥脆东北味", "isSignature": true },
+        { "id": "s019-2", "name": "地三鲜饭", "price": 24, "desc": "茄子土豆青椒", "isSignature": false },
+        { "id": "s019-3", "name": "小鸡炖蘑菇套餐", "price": 45, "desc": "汤浓粉滑", "isSignature": false },
+        { "id": "s019-4", "name": "东北大拉皮", "price": 16, "desc": "麻酱爽滑", "isSignature": false },
+        { "id": "s019-5", "name": "自制酸梅汤", "price": 8, "desc": "解腻", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s020", "name": "意面工坊·西式简餐", "short": "意面工坊", "emoji": "🍝", "cuisine": "西式",
+      "rating": 4.4, "monthlySales": 1500, "avgPrice": 48, "isNew": false,
+      "zone": "中关村", "address": "中关村创业大街 3号楼1层",
+      "lat": 39.9838, "lng": 116.3045, "openTime": "11:00", "closeTime": "21:30",
+      "deliveryFee": 4, "minOrder": 30, "deliveryMinutes": 36,
+      "license": "JY11105010201234", "tags": ["猪肉", "蛋奶"],
+      "dishes": [
+        { "id": "s020-1", "name": "培根蛋酱意面", "price": 42, "desc": "罗马经典奶香", "isSignature": true },
+        { "id": "s020-2", "name": "番茄肉酱意面", "price": 38, "desc": "慢炖肉酱", "isSignature": false },
+        { "id": "s020-3", "name": "香煎鸡排配薯角", "price": 36, "desc": "外酥里嫩", "isSignature": false },
+        { "id": "s020-4", "name": "凯撒沙拉", "price": 22, "desc": "经典配菜", "isSignature": false },
+        { "id": "s020-5", "name": "冰美式", "price": 15, "desc": "醒神", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s021", "name": "都一处·灌汤小笼包", "short": "都一处", "emoji": "🥟", "cuisine": "小吃",
+      "rating": 4.6, "monthlySales": 6200, "avgPrice": 18, "isNew": false,
+      "zone": "中关村", "address": "中关村东路 96号1层",
+      "lat": 39.9860, "lng": 116.3040, "openTime": "06:30", "closeTime": "19:00",
+      "deliveryFee": 2.5, "minOrder": 12, "deliveryMinutes": 22,
+      "license": "JY11105010212345", "tags": ["猪肉"],
+      "dishes": [
+        { "id": "s021-1", "name": "灌汤小笼包（6只）", "price": 14, "desc": "皮薄汤多", "isSignature": true },
+        { "id": "s021-2", "name": "猪肉大葱包", "price": 8, "desc": "老面发酵", "isSignature": false },
+        { "id": "s021-3", "name": "小米粥", "price": 5, "desc": "暖胃", "isSignature": false },
+        { "id": "s021-4", "name": "茶叶蛋", "price": 3, "desc": "五香入味", "isSignature": false },
+        { "id": "s021-5", "name": "凉拌小菜", "price": 6, "desc": "时令", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s022", "name": "泰香米·泰国简餐", "short": "泰香米", "emoji": "🍛", "cuisine": "东南亚",
+      "rating": 4.5, "monthlySales": 1100, "avgPrice": 44, "isNew": true,
+      "zone": "中关村", "address": "中关村广场步行街 R-12",
+      "lat": 39.9830, "lng": 116.3080, "openTime": "10:30", "closeTime": "21:00",
+      "deliveryFee": 3.5, "minOrder": 25, "deliveryMinutes": 34,
+      "license": "JY11105010223456", "tags": ["辣", "海鲜"],
+      "dishes": [
+        { "id": "s022-1", "name": "泰式打抛猪肉饭", "price": 36, "desc": "九层塔香气", "isSignature": true },
+        { "id": "s022-2", "name": "咖喱鸡腿饭", "price": 38, "desc": "椰香咖喱温和", "isSignature": false },
+        { "id": "s022-3", "name": "冬阴功汤（小）", "price": 24, "desc": "酸辣鲜虾", "isSignature": false },
+        { "id": "s022-4", "name": "芒果糯米饭", "price": 22, "desc": "甜糯椰香", "isSignature": false },
+        { "id": "s022-5", "name": "泰式奶茶", "price": 16, "desc": "橙红浓郁", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s023", "name": "老北京炸酱面·总店", "short": "炸酱面", "emoji": "🍜", "cuisine": "面食",
+      "rating": 4.7, "monthlySales": 9800, "avgPrice": 28, "isNew": false,
+      "zone": "中关村", "address": "中关村南大街 15号",
+      "lat": 39.9842, "lng": 116.3030, "openTime": "10:00", "closeTime": "20:30",
+      "deliveryFee": 3, "minOrder": 18, "deliveryMinutes": 29,
+      "license": "JY11105010234567", "tags": ["花生", "猪肉"],
+      "dishes": [
+        { "id": "s023-1", "name": "老北京炸酱面", "price": 22, "desc": "六必居干黄酱", "isSignature": true },
+        { "id": "s023-2", "name": "打卤面", "price": 20, "desc": "口蘑黄花木耳卤", "isSignature": false },
+        { "id": "s023-3", "name": "麻豆腐", "price": 18, "desc": "老北京特色", "isSignature": false },
+        { "id": "s023-4", "name": "炸灌肠", "price": 12, "desc": "蒜汁点睛", "isSignature": false },
+        { "id": "s023-5", "name": "豆汁儿", "price": 5, "desc": "老北京限定", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s024", "name": "鲜芋仙·芋圆甜品", "short": "鲜芋仙", "emoji": "🍧", "cuisine": "茶饮甜品",
+      "rating": 4.3, "monthlySales": 2800, "avgPrice": 25, "isNew": false,
+      "zone": "中关村", "address": "中关村欧美汇购物中心 B1层",
+      "lat": 39.9852, "lng": 116.3095, "openTime": "10:00", "closeTime": "22:00",
+      "deliveryFee": 2.5, "minOrder": 15, "deliveryMinutes": 21,
+      "license": "JY11105010245678", "tags": [],
+      "dishes": [
+        { "id": "s024-1", "name": "芋圆四号甜品", "price": 20, "desc": "芋头红豆地瓜圆", "isSignature": true },
+        { "id": "s024-2", "name": "仙草冻芋圆", "price": 18, "desc": "清凉Q弹", "isSignature": false },
+        { "id": "s024-3", "name": "红豆牛奶冰", "price": 22, "desc": "绵密沙冰", "isSignature": false },
+        { "id": "s024-4", "name": "杨枝甘露", "price": 25, "desc": "芒果西柚西米", "isSignature": false },
+        { "id": "s024-5", "name": "手工豆花", "price": 12, "desc": "黄豆现磨", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s025", "name": "二友居·肉饼家常菜", "short": "二友居", "emoji": "🥘", "cuisine": "家常菜",
+      "rating": 4.2, "monthlySales": 5400, "avgPrice": 30, "isNew": false,
+      "zone": "中关村", "address": "中关村北二条 12号",
+      "lat": 39.9865, "lng": 116.3065, "openTime": "06:30", "closeTime": "20:30",
+      "deliveryFee": 2.5, "minOrder": 15, "deliveryMinutes": 27,
+      "license": "JY11105010256789", "tags": ["猪肉"],
+      "dishes": [
+        { "id": "s025-1", "name": "猪肉大葱肉饼", "price": 15, "desc": "皮薄馅足外酥", "isSignature": true },
+        { "id": "s025-2", "name": "牛肉肉饼", "price": 18, "desc": "饼皮酥脆", "isSignature": false },
+        { "id": "s025-3", "name": "小米粥", "price": 4, "desc": "暖胃", "isSignature": false },
+        { "id": "s025-4", "name": "拌海带丝", "price": 6, "desc": "酸辣开胃", "isSignature": false },
+        { "id": "s025-5", "name": "豆腐脑", "price": 5, "desc": "咸口卤汁", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s026", "name": "谷稻小卷·和风轻食", "short": "谷稻小卷", "emoji": "🍙", "cuisine": "日料",
+      "rating": 4.6, "monthlySales": 1700, "avgPrice": 39, "isNew": true,
+      "zone": "中关村", "address": "中关村领展广场 B1层 B-22",
+      "lat": 39.9848, "lng": 116.3100, "openTime": "10:30", "closeTime": "21:00",
+      "deliveryFee": 3, "minOrder": 20, "deliveryMinutes": 30,
+      "license": "JY11105010267890", "tags": [],
+      "dishes": [
+        { "id": "s026-1", "name": "三色稻荷寿司便当", "price": 32, "desc": "稻荷+玉子+饭团", "isSignature": true },
+        { "id": "s026-2", "name": "照烧鸡饭团便当", "price": 34, "desc": "照烧汁裹米饭", "isSignature": false },
+        { "id": "s026-3", "name": "日式咖喱乌冬", "price": 30, "desc": "乌冬弹滑", "isSignature": false },
+        { "id": "s026-4", "name": "玉子烧", "price": 10, "desc": "层层蛋香", "isSignature": false },
+        { "id": "s026-5", "name": "味噌汤", "price": 8, "desc": "暖胃", "isSignature": false }
+      ]
+    },
+    {
+      "id": "s027", "name": "永和大王·中式快餐", "short": "永和大王", "emoji": "🥢", "cuisine": "中式快餐",
+      "rating": 4.0, "monthlySales": 6800, "avgPrice": 22, "isNew": false,
+      "zone": "中关村", "address": "中关村科贸电子城 1层",
+      "lat": 39.9835, "lng": 116.3050, "openTime": "00:00", "closeTime": "23:59",
+      "deliveryFee": 2, "minOrder": 12, "deliveryMinutes": 23,
+      "license": "JY11105010278901", "tags": ["猪肉"],
+      "dishes": [
+        { "id": "s027-1", "name": "卤肉饭", "price": 22, "desc": "台式卤肉汁浓", "isSignature": true },
+        { "id": "s027-2", "name": "热豆浆（甜）", "price": 6, "desc": "现磨浓醇", "isSignature": false },
+        { "id": "s027-3", "name": "油条", "price": 5, "desc": "现炸酥脆", "isSignature": false },
+        { "id": "s027-4", "name": "虾仁蛋炒饭", "price": 24, "desc": "粒粒分明", "isSignature": false },
+        { "id": "s027-5", "name": "皮蛋瘦肉粥", "price": 16, "desc": "经典早餐也适合深夜", "isSignature": false }
+      ]
+    }
+  ]
+}

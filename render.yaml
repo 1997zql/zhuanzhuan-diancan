@@ -1,0 +1,16 @@
+# Render.com 一键部署配置（Blueprint）
+# 推到 GitHub 后访问 https://dashboard.render.com/select-repo?type=blueprint 选本仓库即可
+services:
+  - type: web
+    name: zhuanzhuan-diancan
+    runtime: node
+    plan: free
+    buildCommand: echo "no build step"
+    startCommand: node server/server.js
+    envVars:
+      - key: DATA_SOURCE
+        value: osm
+      - key: CPS_SOURCE_ID
+        sync: false # 部署时填入你的推广位 PID
+      - key: CPS_ELEME_TEMPLATE
+        sync: false # 可选：闪购联盟短链
