@@ -1,9 +1,9 @@
 // 我的：常用地址、点餐偏好（忌口/预算）、黑名单、运营漏斗
-import { runtime, prefs, savePrefs, setPresetLocation } from '../state.js';
-import { locate, nearestPreset } from '../geo.js';
-import { toast, esc } from '../ui.js';
-import { api } from '../api.js';
-import { RADIUS } from '../config.js';
+import { runtime, prefs, savePrefs, setPresetLocation } from '../state.js?v=c5a29c5';
+import { locate, nearestPreset } from '../geo.js?v=c5a29c5';
+import { toast, esc } from '../ui.js?v=c5a29c5';
+import { api } from '../api.js?v=c5a29c5';
+import { RADIUS } from '../config.js?v=c5a29c5';
 
 export async function render(root) {
   const addresses = runtime.meta.addresses;

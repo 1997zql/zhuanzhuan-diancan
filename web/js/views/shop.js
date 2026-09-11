@@ -1,9 +1,9 @@
 // 店铺详情 + 菜单 + 购物车 + 提交订单（模拟支付）
-import { api } from '../api.js';
-import { runtime, addToCart, decFromCart, getCart, clearCart, cartSummary } from '../state.js';
-import { openSheet, closeSheet, toast, esc, fmt, priceText, distText, sfx } from '../ui.js';
-import { track, cid } from '../track.js';
-import { platformJumpUrl, isStatic } from '../api.js';
+import { api } from '../api.js?v=c5a29c5';
+import { runtime, addToCart, decFromCart, getCart, clearCart, cartSummary } from '../state.js?v=c5a29c5';
+import { openSheet, closeSheet, toast, esc, fmt, priceText, distText, sfx } from '../ui.js?v=c5a29c5';
+import { track, cid } from '../track.js?v=c5a29c5';
+import { platformJumpUrl, isStatic } from '../api.js?v=c5a29c5';
 
 /** 下单跳转链接：静态托管直接跳平台，有后端走归因路由 */
 function jumpUrl(platform, shopRef) {

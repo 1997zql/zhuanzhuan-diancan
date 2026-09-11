@@ -1,7 +1,7 @@
 // 订单列表：状态时间线按当前时间实时推进（10 秒自动刷新）
-import { api } from '../api.js';
-import { cid } from '../track.js';
-import { esc, fmt } from '../ui.js';
+import { api } from '../api.js?v=c5a29c5';
+import { cid } from '../track.js?v=c5a29c5';
+import { esc, fmt } from '../ui.js?v=c5a29c5';
 
 let timer = null;
 

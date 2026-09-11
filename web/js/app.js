@@ -1,16 +1,16 @@
 // 应用入口：启动流程（元数据 → 定位解析）+ hash 路由
-import { api } from './api.js';
-import { runtime, restoreLocation, setPresetLocation, setCustomLocation } from './state.js';
-import { locate, nearestPreset } from './geo.js';
-import { toast, esc, closeSheet } from './ui.js';
-import { track } from './track.js';
-import { refreshTopbar, bindTopbar } from './topbar.js';
-import { RADIUS } from './config.js';
-import * as home from './views/home.js';
-import * as shops from './views/shops.js';
-import * as shop from './views/shop.js';
-import * as orders from './views/orders.js';
-import * as me from './views/me.js';
+import { api } from './api.js?v=c5a29c5';
+import { runtime, restoreLocation, setPresetLocation, setCustomLocation } from './state.js?v=c5a29c5';
+import { locate, nearestPreset } from './geo.js?v=c5a29c5';
+import { toast, esc, closeSheet } from './ui.js?v=c5a29c5';
+import { track } from './track.js?v=c5a29c5';
+import { refreshTopbar, bindTopbar } from './topbar.js?v=c5a29c5';
+import { RADIUS } from './config.js?v=c5a29c5';
+import * as home from './views/home.js?v=c5a29c5';
+import * as shops from './views/shops.js?v=c5a29c5';
+import * as shop from './views/shop.js?v=c5a29c5';
+import * as orders from './views/orders.js?v=c5a29c5';
+import * as me from './views/me.js?v=c5a29c5';
 
 const routes = { home, shops, shop, orders, me };
 let currentName = 'home';

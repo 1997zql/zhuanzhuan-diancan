@@ -1,11 +1,11 @@
 // 顶栏：地址展示 + 地址切换弹层
 // demo 模式：定位回退 + 预设办公地址
 // amap 模式：定位 + 逆地理编码 + 高德关键字搜索真实地址
-import { locate, nearestPreset } from './geo.js';
-import { runtime, setPresetLocation, setCustomLocation } from './state.js';
-import { openSheet, closeSheet, toast, esc } from './ui.js';
-import { api } from './api.js';
-import { RADIUS } from './config.js';
+import { locate, nearestPreset } from './geo.js?v=c5a29c5';
+import { runtime, setPresetLocation, setCustomLocation } from './state.js?v=c5a29c5';
+import { openSheet, closeSheet, toast, esc } from './ui.js?v=c5a29c5';
+import { api } from './api.js?v=c5a29c5';
+import { RADIUS } from './config.js?v=c5a29c5';
 
 export function refreshTopbar() {
   const el = document.getElementById('addrName');

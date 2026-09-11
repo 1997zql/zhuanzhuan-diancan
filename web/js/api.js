@@ -1,6 +1,6 @@
 // API 层：自动适配「有后端」与「纯静态托管（GitHub Pages 等）」两种环境
 // 静态模式下，店铺/转盘/地址搜索全部由前端直连开放数据（Overpass/Photon，免注册）
-import { fetchShops, searchAddress, reverseName, buildWheelStatic } from './staticSource.js';
+import { fetchShops, searchAddress, reverseName, buildWheelStatic } from './staticSource.js?v=c5a29c5';
 
 let STATIC = false;
 export function enableStatic() { STATIC = true; }

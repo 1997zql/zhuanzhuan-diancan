@@ -1,7 +1,7 @@
 // 附近店铺列表：品类筛选 + 距离/评分/人均排序 + 营业状态
-import { api } from '../api.js';
-import { runtime } from '../state.js';
-import { esc, fmt, fmtOr, distText } from '../ui.js';
+import { api } from '../api.js?v=c5a29c5';
+import { runtime } from '../state.js?v=c5a29c5';
+import { esc, fmt, fmtOr, distText } from '../ui.js?v=c5a29c5';
 
 const filters = { category: '', sort: 'distance', openOnly: true };
 

@@ -1,10 +1,10 @@
 // 转盘页：加载候选 → 转动 → 结果卡片 → 排除/换一批/分享/下单
-import { api, platformJumpUrl, isStatic } from '../api.js';
-import { runtime, prefs, savePrefs, session, pushSeen } from '../state.js';
-import { openSheet, closeSheet, toast, esc, fmt, fmtOr, distText, sfx } from '../ui.js';
-import { Wheel } from '../wheel.js';
-import { openAddressSheet } from '../topbar.js';
-import { track } from '../track.js';
+import { api, platformJumpUrl, isStatic } from '../api.js?v=c5a29c5';
+import { runtime, prefs, savePrefs, session, pushSeen } from '../state.js?v=c5a29c5';
+import { openSheet, closeSheet, toast, esc, fmt, fmtOr, distText, sfx } from '../ui.js?v=c5a29c5';
+import { Wheel } from '../wheel.js?v=c5a29c5';
+import { openAddressSheet } from '../topbar.js?v=c5a29c5';
+import { track } from '../track.js?v=c5a29c5';
 
 let wheel = null;
 let wheelData = null;

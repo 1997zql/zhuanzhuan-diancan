@@ -1,5 +1,5 @@
 // Canvas 随机转盘：扇区绘制 / 缓动动画 / 落点计算 / 转动音效
-import { sfx } from './ui.js';
+import { sfx } from './ui.js?v=c5a29c5';
 
 const PALETTE = ['#FF7A45', '#FFB84D', '#4DABF7', '#69DB7C', '#B197FC', '#FF8FAB', '#3BC9DB', '#FFA94D'];
 const TAU = Math.PI * 2;
