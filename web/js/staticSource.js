@@ -134,16 +134,18 @@ export async function fetchShops(lat, lng, radius = RADIUS) {
   const key = `${lat.toFixed(3)},${lng.toFixed(3)}`;
   const hit = cache.get(key);
   if (hit && Date.now() - hit.ts < TTL) return hit.list;
-  // sessionStorage：刷新页面不重复查询
-  try {
-    const ss = sessionStorage.getItem('zzdc.osm.' + key);
-    if (ss) {
-      const saved = JSON.parse(ss);
-      if (Date.now() - saved.ts < TTL) { cache.set(key, { list: saved.list, ts: saved.ts }); return saved.list; }
-    }
-  } catch (e) { /* 忽略 */ }
+  // 两级缓存：内存 → sessionStorage（刷新）→ localStorage（跨会话，30 分钟）
+  for (const store of [sessionStorage, localStorage]) {
+    try {
+      const ss = store.getItem('zzdc.osm.' + key);
+      if (ss) {
+        const saved = JSON.parse(ss);
+        if (Date.now() - saved.ts < TTL) { cache.set(key, { list: saved.list, ts: saved.ts }); return saved.list; }
+      }
+    } catch (e) { /* 忽略 */ }
+  }
   const elements = (await fetchOverpass(lat, lng, radius)) || [];
-  if (elements.length === 0) throw new Error('周边暂无 OpenStreetMap 餐饮数据');
+  if (elements.length === 0) { const err = new Error('NO_OSM_DATA'); err.code = 'NO_OSM_DATA'; throw err; }
   const seen = new Set();
   const list = elements
     .map((el) => mapElement(el, lat, lng))
@@ -152,7 +154,11 @@ export async function fetchShops(lat, lng, radius = RADIUS) {
     .filter((s) => s.distanceM <= radius)
     .sort((a, b) => a.distanceM - b.distanceM);
   cache.set(key, { list, ts: Date.now() });
-  try { sessionStorage.setItem('zzdc.osm.' + key, JSON.stringify({ list, ts: Date.now() })); } catch (e) { /* 忽略 */ }
+  try {
+    const payload = JSON.stringify({ list, ts: Date.now() });
+    sessionStorage.setItem('zzdc.osm.' + key, payload);
+    localStorage.setItem('zzdc.osm.' + key, payload);
+  } catch (e) { /* 存储满则忽略 */ }
   return list;
 }
 
@@ -222,7 +228,11 @@ export async function buildWheelStatic({ lat, lng, excludeIds = [], maxPrice = 0
     .filter((s) => ![...avoid].some((t) => s.tags.includes(t)));
 
   if (pool.length >= 6) {
-    const picked = weightedSample(pool, Math.min(8, pool.length));
+    // 扇区重名去重：同名店铺只保留距离最近的一家，避免转盘出现多个"星巴克"
+    const byShort = new Map();
+    for (const s of pool) if (!byShort.has(s.short)) byShort.set(s.short, s);
+    const deduped = [...byShort.values()];
+    const picked = weightedSample(deduped, Math.min(8, deduped.length));
     return { mode: 'shop', sectors: picked.map((s) => ({ type: 'shop', shop: s })), poolSize: pool.length };
   }
 

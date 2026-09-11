@@ -50,6 +50,17 @@ async function render() {
   }
 }
 
+
+
+/** 微信内打开引导：转发到微信群的主要场景，微信 webview 里体验受限 */
+function showWechatTip() {
+  if (!/MicroMessenger/i.test(navigator.userAgent)) return;
+  const tip = document.createElement('div');
+  tip.id = 'wechat-tip';
+  tip.innerHTML = '点击右上角 <b>···</b> → 选择「在浏览器打开」，转盘体验更佳';
+  tip.addEventListener('click', () => tip.remove());
+  document.getElementById('app').prepend(tip);
+}
 async function boot() {
   bindTopbar(render);
   try {
@@ -80,6 +91,7 @@ async function boot() {
     }
   }
 
+  showWechatTip();
   window.addEventListener('hashchange', render);
   render();
 }

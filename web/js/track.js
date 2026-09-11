@@ -16,8 +16,25 @@ if (!cid) {
   localStorage.setItem('zzdc.cid', cid);
 }
 
+const STATIC_KEY = 'zzdc.localfunnel.v1';
+
+/** 静态模式本地漏斗：无后端时把关键事件累计在本地 */
+function bumpLocalFunnel(event) {
+  try {
+    const f = JSON.parse(localStorage.getItem(STATIC_KEY) || '{}');
+    f[event] = (f[event] || 0) + 1;
+    f._last = Date.now();
+    localStorage.setItem(STATIC_KEY, JSON.stringify(f));
+  } catch (e) { /* 忽略 */ }
+}
+
+export function localFunnel() {
+  try { return JSON.parse(localStorage.getItem(STATIC_KEY) || '{}'); } catch (e) { return {}; }
+}
+
 export function track(event, props = {}) {
   const payload = { event, sid, cid, ...props };
+  bumpLocalFunnel(event);
   try {
     if (navigator.sendBeacon) {
       navigator.sendBeacon('/api/track', new Blob([JSON.stringify(payload)], { type: 'application/json' }));

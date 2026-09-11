@@ -168,6 +168,19 @@ export async function render(root) {
 async function renderStats() {
   const box = document.getElementById('statsBox');
   if (!box) return;
+  if (runtime.meta.dataMode !== 'demo') {
+    // 静态托管模式：展示本机漏斗（无后端统计）
+    const { localFunnel } = await import('../track.js');
+    const f = localFunnel();
+    const row = (label, k) => `<div class="co-row"><span class="lab">${label}</span><span class="val">${f[k] || 0}</span></div>`;
+    box.innerHTML = `
+      ${row('🎯 转盘加载', 'wheel_load')}
+      ${row('🔄 转动', 'wheel_spin')}
+      ${row('🍽️ 转出结果', 'wheel_result')}
+      ${row('🛒 点击下单', 'order_click')}
+      <div class="me-note" style="padding:4px 0 0">静态版漏斗仅记录本机数据。</div>`;
+    return;
+  }
   try {
     const s = await api.stats();
     const c = s.counts;

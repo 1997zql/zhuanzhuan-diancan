@@ -531,3 +531,17 @@ a { color: inherit; text-decoration: none; }
   text-align: center;
   animation: fadeIn 0.15s ease-out;
 }
+
+/* 微信内打开引导条 */
+#wechat-tip {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 8px 14px;
+  background: #fff8e1;
+  color: #8a6d1a;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+  border-bottom: 1px solid #f3e2a9;
+}

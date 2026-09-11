@@ -79,8 +79,13 @@ async function loadSectors(autoSpin) {
       blacklistIds: prefs.blacklist.map((b) => b.id),
     });
   } catch (e) {
-    setMeta('加载失败，请重试');
-    toast(e.message);
+    const z = document.querySelector('.wheel-zone');
+    const a = document.querySelector('.hero-actions');
+    if (z) z.style.display = 'none';
+    if (a) a.style.display = 'none';
+    const noData = e.code === 'NO_OSM_DATA';
+    setMeta(noData ? '附近暂无 OpenStreetMap 餐饮数据' : '数据服务暂时不可用');
+    showLoadFail(noData, e.message);
     return;
   }
 
@@ -102,6 +107,29 @@ async function loadSectors(autoSpin) {
   setMeta(poolMetaText(d));
   track('wheel_load', { mode: d.mode, poolSize: d.poolSize });
   if (autoSpin) doSpin();
+}
+
+/** 数据服务失败时的重试态（区别于真实空态） */
+function showLoadFail(noData, message) {
+  removeEmpty();
+  const el = document.createElement('div');
+  el.id = 'homeEmpty';
+  el.className = 'card empty-card';
+  el.style.marginTop = '12px';
+  el.innerHTML = `
+    <div class="big">${noData ? '🗺️' : '📡'}</div>
+    <h3>${noData ? '附近暂无开放地图餐饮数据' : '数据服务暂时不可用'}</h3>
+    <p>${noData ? '这个区域 OpenStreetMap 覆盖有限，换个地标试试，或稍后再来。' : esc(message || '网络波动，稍后再试')}</p>
+    <button class="btn-primary" id="retryLoad">重新加载</button>`;
+  document.getElementById('hero').after(el);
+  el.querySelector('#retryLoad').addEventListener('click', async () => {
+    el.remove();
+    const z = document.querySelector('.wheel-zone');
+    if (z) z.style.display = '';
+    const a = document.querySelector('.hero-actions');
+    if (a) a.style.display = '';
+    await loadSectors(false);
+  });
 }
 
 function showEmpty(noShops) {
