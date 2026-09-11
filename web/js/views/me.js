@@ -23,7 +23,7 @@ export async function render(root) {
       <button class="me-row" id="gpsRow" style="width:100%;text-align:left;background:#fff">
         <span class="r-main">
           <span style="font-weight:700">📍 使用当前定位</span>
-          <span class="r-sub">${usingCustom ? `当前使用：我的位置（${prefs.custom.lat.toFixed(4)}, ${prefs.custom.lng.toFixed(4)}）` : '点击定位当前位置'}</span>
+          <span class="r-sub">${usingCustom ? `当前使用：我的位置（${Number(prefs.custom.lat).toFixed(4)}, ${Number(prefs.custom.lng).toFixed(4)}）` : '点击定位当前位置'}</span>
         </span>
         <span style="color:#adb5bd">›</span>
       </button>

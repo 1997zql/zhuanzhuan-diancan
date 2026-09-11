@@ -42,7 +42,9 @@ async function render() {
   const root = document.getElementById('view');
   root.innerHTML = '';
   try {
-    await (routes[name] || home).render(root, { arg, query });
+    // hasOwn 防原型链命中（如 #/constructor），未知路由回首页
+    const route = Object.prototype.hasOwnProperty.call(routes, name) ? routes[name] : home;
+    await route.render(root, { arg, query });
   } catch (e) {
     root.innerHTML = `<div class="card empty-card"><div class="big">😵</div><h3>页面出错了</h3><p>${esc(e.message)}</p></div>`;
   }

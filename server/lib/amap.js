@@ -52,12 +52,14 @@ const around = (lat, lng, { radius = 3000, page = 1 } = {}) =>
     extensions: 'all',
   });
 
-/** 关键字搜索（地址联想） */
-const textSearch = (keywords, city) =>
+/** 关键字搜索（地址联想）；bias = { lat, lng } 时按距用户远近排序，避免全国同名地标挤掉身边结果 */
+const textSearch = (keywords, city, bias) =>
   get('/v3/place/text', {
     keywords,
     city,
     citylimit: city ? 'true' : 'false',
+    location: bias && isFinite(bias.lat) && isFinite(bias.lng) ? `${bias.lng},${bias.lat}` : null,
+    sortdistance: bias ? '1' : null,
     offset: 10,
     page: 1,
     extensions: 'all',

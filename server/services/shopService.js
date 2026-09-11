@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { haversineM, openStatusOf, wgs2gcj } = require('../lib/geo');
+const { haversineM, openStatusOf, gcj2wgs } = require('../lib/geo');
 const amap = require('../lib/amap');
 const osm = require('../lib/osm');
 
@@ -82,7 +82,9 @@ function demoList() {
 // ===== amap 模式 =====
 
 // 缓存：坐标网格（约 110 米）→ POI 摘要列表，避免每次转动都打高德接口
+// 网格数量与请求坐标相关（公网可被扫坐标撑爆内存），超过上限整体清空重建
 const poiCache = new Map();
+const POI_CACHE_MAX = 500;
 const CACHE_TTL = 10 * 60 * 1000;
 
 // 注册表：POI id → 摘要，让 detail / 下单守卫不依赖坐标即可定位店铺
@@ -198,6 +200,7 @@ async function amapList(lat, lng) {
     poiRegistry.set(s.id, s);
     if (poiRegistry.size > 5000) poiRegistry.clear();
   });
+  if (poiCache.size >= POI_CACHE_MAX) poiCache.clear();
   poiCache.set(key, { list, ts: Date.now() });
   return list;
 }
@@ -299,6 +302,7 @@ async function osmList(lat, lng) {
     poiRegistry.set(s.id, s);
     if (poiRegistry.size > 5000) poiRegistry.clear();
   });
+  if (poiCache.size >= POI_CACHE_MAX) poiCache.clear();
   poiCache.set(key, { list, ts: Date.now() });
   return list;
 }
@@ -390,22 +394,26 @@ function meta() {
   };
 }
 
-/** 逆地理编码仅 amap 模式可用（demo 模式无真实地址服务） */
+/** 逆地理编码仅 amap 模式可用（demo 模式无真实地址服务）
+ *  入参 lat/lng 已由 server.js parseCoords 统一转为 GCJ-02，这里不能再转一次 */
 async function reverseGeocode(lat, lng) {
-  const gcj = wgs2gcj(lat, lng);
-  const data = await amap.regeo(gcj.lat, gcj.lng);
+  const data = await amap.regeo(lat, lng);
   return data.regeocode && data.regeocode.formatted_address;
 }
 
-/** 地址关键字联想（amap 模式） */
-async function suggest(keywords, city) {
-  const data = await amap.textSearch(keywords, city);
+/** 地址关键字联想（amap 模式）
+ *  高德返回的是 GCJ-02 坐标，必须转回 WGS-84 再下发——
+ *  前端契约是「客户端只上报 WGS-84」，否则会被 parseCoords 二次转换造成约 500 米偏移
+ *  bias: { lat, lng } 当前位置，用于结果就近排序 */
+async function suggest(keywords, city, bias) {
+  const data = await amap.textSearch(keywords, city, bias);
   return (data.pois || [])
     .map((p) => {
       const [lngS, latS] = String(p.location || '').split(',');
-      const lat = parseFloat(latS);
-      const lng = parseFloat(lngS);
-      if (!isFinite(lat) || !isFinite(lng)) return null;
+      const gcjLat = parseFloat(latS);
+      const gcjLng = parseFloat(lngS);
+      if (!isFinite(gcjLat) || !isFinite(gcjLng)) return null;
+      const { lat, lng } = gcj2wgs(gcjLat, gcjLng);
       const district = [p.pname, p.cityname, p.adname].filter(Boolean).join('');
       return { id: 'a' + p.id, name: p.name, district, lat, lng };
     })
@@ -418,9 +426,9 @@ async function reverseGeocodeOsm(lat, lng) {
   return osm.photonReverse(lat, lng);
 }
 
-/** 地址关键字联想（osm 模式，Photon，免注册） */
-async function suggestOsm(keywords) {
-  return osm.photonSearch(keywords);
+/** 地址关键字联想（osm 模式，Photon，免注册；bias 为当前位置，用于结果就近排序） */
+async function suggestOsm(keywords, bias) {
+  return osm.photonSearch(keywords, bias);
 }
 
 module.exports = {

@@ -6,7 +6,7 @@ try {
   sid = `s${Date.now()}`;
 }
 
-let cid = localStorage.getItem('zzdc.cid');
+export let cid = localStorage.getItem('zzdc.cid');
 if (!cid) {
   try {
     cid = crypto.randomUUID ? crypto.randomUUID() : `c${Date.now()}${Math.floor(Math.random() * 1e6)}`;

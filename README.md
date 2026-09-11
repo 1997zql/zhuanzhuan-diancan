@@ -14,7 +14,7 @@ node server/server.js
 
 ## 接入真实数据（高德 POI）
 
-默认运行在演示数据模式；配置高德 Key 后自动切换为真实店铺数据：
+默认使用 **OpenStreetMap 真实数据**（`.env` 里 `DATA_SOURCE=osm`，无需注册任何账号）；配置高德 Key 后自动切换为高德真实店铺数据；`DATA_SOURCE=demo` 可切回演示数据：
 
 ```bash
 # 1. 在 https://lbs.amap.com 注册并实名认证，创建应用获取 Web服务 Key
@@ -62,7 +62,7 @@ AMAP_KEY=test AMAP_BASE=http://127.0.0.1:8790 node server/server.js    # 主服�
 
 ## 商业化：CPS 跳转与转化漏斗（V1.2）
 
-已内置 CPS 归因链路与全漏斗埋点（「我的」页可看实时漏斗卡片，数据持久化于 `server/data/events.jsonl`）：
+已内置 CPS 归因链路与全漏斗埋点（「我的」页可看实时漏斗卡片，数据持久化于 `server/data/events.jsonl`，超过 2MB 自动轮转；`order_submit` / `cps_redirect` 仅服务端产生，不接受客户端上报，防漏斗伪造）：
 
 ```
 转盘加载 → 转动 → 转出结果 → 点击下单 → 平台跳转（302 归因）→ 站内下单(demo)
@@ -162,7 +162,7 @@ CPS_SOURCE_ID=mm_xxx_xxx_xxx
 
 ## 已知边界与后续迭代
 
-- 订单存内存，服务重启即清空；支付、外卖平台跳转 / CPS 分佣为模拟或未接入。
+- 订单存内存，服务重启即清空；订单按浏览器标识（cid）隔离，仅本人可见；支付、外卖平台跳转 / CPS 分佣为模拟或未接入。
 - 店铺为演示数据；接真实数据只需替换 `shopService` 的数据源。
 - 转盘音效依赖浏览器手势后初始化 WebAudio，失败时静默降级。
 - 后续路线见 MRD §3.3：一期跳转合作平台深链 + CPS，二期自有交易闭环、团队拼单转盘、企业福利（B 端）。

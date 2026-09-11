@@ -2,7 +2,15 @@
 import { api } from '../api.js';
 import { runtime, addToCart, decFromCart, getCart, clearCart, cartSummary } from '../state.js';
 import { openSheet, closeSheet, toast, esc, fmt, priceText, distText, sfx } from '../ui.js';
-import { track } from '../track.js';
+import { track, cid } from '../track.js';
+import { platformJumpUrl, isStatic } from '../api.js';
+
+/** 下单跳转链接：静态托管直接跳平台，有后端走归因路由 */
+function jumpUrl(platform, shopRef) {
+  return isStatic()
+    ? platformJumpUrl(platform, shopRef.name)
+    : `/api/cps/go?${new URLSearchParams({ platform, name: shopRef.name, shopId: shopRef.id, source: 'page' })}`;
+}
 
 let shop = null;
 let fromWheel = false;
@@ -47,8 +55,8 @@ export async function render(root, { arg, query }) {
       <h3>该店来自地图真实数据</h3>
       <p>暂未接入菜单与在线交易：通过外卖 App 搜索下单即可</p>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-        <a class="btn-primary" id="cpsEleme" href="/api/cps/go?${new URLSearchParams({ platform: 'eleme', name: shop.name, shopId: shop.id, source: 'page' })}" target="_blank" rel="noopener">淘宝闪购下单</a>
-        <a class="btn-ghost" id="cpsMeituan" href="/api/cps/go?${new URLSearchParams({ platform: 'meituan', name: shop.name, shopId: shop.id, source: 'page' })}" target="_blank" rel="noopener">美团外卖</a>
+        <a class="btn-primary" id="cpsEleme" href="${jumpUrl('eleme', shop)}" target="_blank" rel="noopener">淘宝闪购下单</a>
+        <a class="btn-ghost" id="cpsMeituan" href="${jumpUrl('meituan', shop)}" target="_blank" rel="noopener">美团外卖</a>
         <button class="btn-ghost" id="copyShopName">复制店名</button>
       </div>
     </div>`
@@ -186,6 +194,7 @@ function checkoutSheet() {
         shopId: shop.id,
         items: items.map(({ dishId, qty }) => ({ dishId, qty })),
         fromWheel,
+        cid,
         addressName: loc.name,
         remark: document.getElementById('remarkInput').value.trim(),
       });

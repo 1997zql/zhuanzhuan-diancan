@@ -1,5 +1,5 @@
 // 转盘页：加载候选 → 转动 → 结果卡片 → 排除/换一批/分享/下单
-import { api } from '../api.js';
+import { api, platformJumpUrl, isStatic } from '../api.js';
 import { runtime, prefs, savePrefs, session, pushSeen } from '../state.js';
 import { openSheet, closeSheet, toast, esc, fmt, fmtOr, distText, sfx } from '../ui.js';
 import { Wheel } from '../wheel.js';
@@ -192,7 +192,9 @@ function showResult(shop, category) {
   pushSeen(shop.id);
   const isPoi = shop.sourcedFrom === 'poi';
   const cpsHref = (platform) =>
-    `/api/cps/go?${new URLSearchParams({ platform, name: shop.name, shopId: shop.id, source: 'wheel' })}`;
+    isStatic()
+      ? platformJumpUrl(platform, shop.name)
+      : `/api/cps/go?${new URLSearchParams({ platform, name: shop.name, shopId: shop.id, source: 'wheel' })}`;
   const primaryAction = isPoi
     ? `<a class="btn-primary" data-act="order" href="${cpsHref('eleme')}" target="_blank" rel="noopener">去淘宝闪购下单</a>`
     : `<button class="btn-primary" data-act="order">去下单 · ${esc(shop.short || shop.name)}</button>`;
@@ -345,7 +347,7 @@ function shareCard(shop) {
     <div class="result-head">分享卡片</div>
     <img class="share-img" src="${url}" alt="转盘结果分享卡片" style="margin-top:12px" />
     <div class="share-actions" style="flex-wrap:wrap">
-      <a class="btn-primary" id="saveImg" download="转转点餐-${shop.short || shop.name}.png" href="${url}">保存图片</a>
+      <a class="btn-primary" id="saveImg" download="转转点餐-${esc(shop.short || shop.name)}.png" href="${url}">保存图片</a>
       <button class="btn-ghost" id="copyText">复制文案</button>
       <button class="btn-ghost" id="copyLink">复制应用链接</button>
     </div>

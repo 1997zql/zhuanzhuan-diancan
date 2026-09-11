@@ -59,9 +59,14 @@ out center 60;`;
 
 const PHOTON = 'https://photon.komoot.io';
 
-/** 地址关键字搜索 → [{ id, name, district, lat, lng }]（WGS-84） */
-async function photonSearch(keywords, limit = 6) {
-  const res = await fetchWithTimeout(`${PHOTON}/api?q=${encodeURIComponent(keywords)}&limit=${limit}`);
+/** 地址关键字搜索 → [{ id, name, district, lat, lng }]（WGS-84）
+ *  bias = { lat, lng } 时传给 Photon 做就近偏置，避免全国同名地点挤掉身边结果 */
+async function photonSearch(keywords, bias, limit = 6) {
+  let url = `${PHOTON}/api?q=${encodeURIComponent(keywords)}&limit=${limit}`;
+  if (bias && isFinite(bias.lat) && isFinite(bias.lng)) {
+    url += `&lat=${bias.lat}&lon=${bias.lng}`;
+  }
+  const res = await fetchWithTimeout(url);
   if (!res.ok) {
     const err = new Error(`Photon 响应异常（HTTP ${res.status}）`);
     err.code = 'OSM_HTTP';

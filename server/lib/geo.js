@@ -25,7 +25,12 @@ function openStatusOf(openTime, closeTime, now = new Date()) {
   const close = ch * 60 + cm;
   const overnight = close <= open;
   const isOpen = overnight ? cur >= open || cur < close : cur >= open && cur < close;
-  const closingInMin = isOpen && !overnight ? close - cur : null;
+  // 跨夜店（如 18:00-02:00）：半夜侧直接差值，晚间侧经过 0 点折算
+  const closingInMin = !isOpen
+    ? null
+    : overnight
+      ? (cur < close ? close - cur : 1440 - cur + close)
+      : close - cur;
   return { open: isOpen, closingInMin };
 }
 
@@ -72,4 +77,11 @@ function wgs2gcj(lat, lng) {
   };
 }
 
-module.exports = { haversineM, openStatusOf, wgs2gcj };
+/** GCJ-02 → WGS-84 近似逆变换（在 GCJ 点位上取偏移做一次镜像折返，国内误差约 1~2 米） */
+function gcj2wgs(lat, lng) {
+  if (outOfChina(lat, lng)) return { lat, lng };
+  const gcj = wgs2gcj(lat, lng);
+  return { lat: lat * 2 - gcj.lat, lng: lng * 2 - gcj.lng };
+}
+
+module.exports = { haversineM, openStatusOf, wgs2gcj, gcj2wgs };

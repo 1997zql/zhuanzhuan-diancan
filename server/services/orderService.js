@@ -13,8 +13,13 @@ const T = {
 /** 内存订单表：重启即清空，演示环境可接受 */
 const orders = new Map();
 
+/** 订单号：毫秒时间戳 + 4 位 base36 随机数，撞号时重生成（同毫秒并发下单） */
 function newOrderId() {
-  return 'W' + Date.now().toString(36).toUpperCase() + Math.floor(Math.random() * 900 + 100);
+  let id;
+  do {
+    id = 'W' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 6).toUpperCase();
+  } while (orders.has(id));
+  return id;
 }
 
 /**
@@ -38,14 +43,18 @@ async function createOrder(payload = {}) {
   const itemsIn = Array.isArray(payload.items) ? payload.items : [];
   const items = [];
   for (const it of itemsIn) {
-    const qty = Math.max(1, Math.min(99, Math.floor(Number(it.qty) || 0)));
+    // 条目必须是对象且数量为正整数；qty≤0 / 脏数据直接跳过（不留进订单）
+    if (!it || typeof it !== 'object') continue;
+    const q = Math.floor(Number(it.qty));
+    if (!Number.isFinite(q) || q <= 0) continue;
+    const qty = Math.min(99, q);
     const dish = shop.dishes.find((d) => d.id === it.dishId);
     if (!dish) {
       const err = new Error(`菜品不存在：${it.dishId}`);
       err.code = 'DISH_NOT_FOUND';
       throw err;
     }
-    if (qty > 0) items.push({ dishId: dish.id, name: dish.name, price: dish.price, qty });
+    items.push({ dishId: dish.id, name: dish.name, price: dish.price, qty });
   }
   if (items.length === 0) {
     const err = new Error('购物车为空');
@@ -72,6 +81,7 @@ async function createOrder(payload = {}) {
     deliveryFee: shop.deliveryFee,
     total: Number((subtotal + shop.deliveryFee).toFixed(1)),
     fromWheel: !!payload.fromWheel,
+    cid: String(payload.cid || '').slice(0, 64),
     addressName: String(payload.addressName || '').slice(0, 40) || '未填写地址',
     remark: String(payload.remark || '').slice(0, 100),
     createdAt: now,
@@ -91,9 +101,14 @@ async function createOrder(payload = {}) {
   return order;
 }
 
-/** 按下单时间倒序 */
-function list() {
-  return [...orders.values()].sort((a, b) => b.createdAt - a.createdAt);
+/**
+ * 按下单时间倒序；cid 隔离：带 cid 只返回该浏览器（localStorage 标识）的订单，
+ * 不带 cid 只返回无主订单（历史数据/手动调用），避免公网部署时互相看到他人的地址备注
+ */
+function list(cid) {
+  let arr = [...orders.values()];
+  arr = cid ? arr.filter((o) => o.cid === cid) : arr.filter((o) => !o.cid);
+  return arr.sort((a, b) => b.createdAt - a.createdAt);
 }
 
 module.exports = { createOrder, list };

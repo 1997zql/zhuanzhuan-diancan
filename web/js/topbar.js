@@ -98,7 +98,9 @@ function bindAddressSearch() {
     }
     timer = setTimeout(async () => {
       try {
-        const { suggestions } = await api.suggest(kw);
+        // 带上当前坐标做就近偏置，避免全国同名地标挤掉身边结果
+        const bias = runtime.location ? { lat: runtime.location.lat, lng: runtime.location.lng } : {};
+        const { suggestions } = await api.suggest(kw, bias);
         listBox.innerHTML = suggestions
           .map(
             (s, i) => `

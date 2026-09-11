@@ -8,6 +8,15 @@ const path = require('path');
 
 const FILE = path.join(__dirname, '..', 'data', 'events.jsonl');
 const MAX = 5000;
+/** JSONL 超过该字节数轮转为 events.jsonl.1（可用 TRACK_MAX_FILE_BYTES 覆盖，便于测试/调优） */
+const MAX_FILE_BYTES = Number(process.env.TRACK_MAX_FILE_BYTES) || 2 * 1024 * 1024;
+
+let fileBytes = 0;
+try {
+  fileBytes = fs.statSync(FILE).size;
+} catch (err) {
+  /* 首次运行无文件 */
+}
 
 /** 允许上报的事件（白名单，防垃圾数据） */
 const EVENTS = new Set([
@@ -17,14 +26,18 @@ const EVENTS = new Set([
   'wheel_spin',    // 点击转动
   'wheel_result',  // 转出结果
   'order_click',   // 点击下单/跳转（意向）
-  'order_submit',  // 站内下单成功（服务端产生，最可信）
-  'cps_redirect',  // CPS 302 跳转（服务端产生，最可信）
+  'order_submit',  // 站内下单成功（仅服务端产生）
+  'cps_redirect',  // CPS 302 跳转（仅服务端产生）
   'shop_copy',     // 复制店名
   'shop_exclude',  // 排除此店
   'shop_batch',    // 换一批
   'shop_ban',      // 拉黑
   'share_open',    // 打开分享卡片
 ]);
+
+/** 客户端可上报子集：order_submit / cps_redirect 由服务端产生，
+ *  开放给 /api/track 会让转化漏斗被任意伪造 */
+const CLIENT_EVENTS = new Set([...EVENTS].filter((e) => e !== 'order_submit' && e !== 'cps_redirect'));
 
 /** 埋点属性白名单（防止任意字段写入） */
 const PROP_KEYS = new Set(['sid', 'cid', 'view', 'mode', 'poolSize', 'shopId', 'shopName', 'isPoi', 'category', 'platform', 'source', 'total', 'fromWheel']);
@@ -57,7 +70,14 @@ function track(event, props = {}) {
   events.push(e);
   if (events.length > MAX) events.splice(0, events.length - MAX);
   try {
-    fs.appendFileSync(FILE, JSON.stringify(e) + '\n');
+    if (fileBytes >= MAX_FILE_BYTES) {
+      fs.rmSync(FILE + '.1', { force: true });
+      fs.renameSync(FILE, FILE + '.1');
+      fileBytes = 0;
+    }
+    const line = JSON.stringify(e) + '\n';
+    fs.appendFileSync(FILE, line);
+    fileBytes += Buffer.byteLength(line);
   } catch (err) {
     /* 磁盘异常不阻塞业务 */
   }
@@ -86,4 +106,4 @@ function stats() {
   };
 }
 
-module.exports = { track, stats, EVENTS };
+module.exports = { track, stats, EVENTS, CLIENT_EVENTS };

@@ -1,5 +1,6 @@
 // 订单列表：状态时间线按当前时间实时推进（10 秒自动刷新）
 import { api } from '../api.js';
+import { cid } from '../track.js';
 import { esc, fmt } from '../ui.js';
 
 let timer = null;
@@ -19,7 +20,7 @@ export async function render(root) {
 async function load() {
   const el = document.getElementById('orderList');
   if (!el) return;
-  const { orders } = await api.orders();
+  const { orders } = await api.orders({ cid });
   el.innerHTML =
     orders.length > 0
       ? orders.map(orderHtml).join('')

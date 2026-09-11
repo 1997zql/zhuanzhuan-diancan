@@ -82,8 +82,17 @@ function apiError(res, err, fallbackCode = 500) {
     AMAP_NETWORK: 502,
     AMAP_HTTP: 502,
     AMAP_API: 502,
+    OSM_HTTP: 502,
+    OSM_API: 502,
+    OSM_NETWORK: 502,
   };
-  send(res, map[code] || fallbackCode, { error: code, message: err.message, needMore: err.needMore });
+  const known = map[code];
+  if (!known) {
+    // 未归类的异常：记日志，但不把内部报错细节透给客户端
+    console.error('[server]', err);
+    return send(res, fallbackCode, { error: code, message: '服务开小差了，请稍后再试' });
+  }
+  send(res, known, { error: code, message: err.message, needMore: err.needMore });
 }
 
 /** 客户端坐标按数据源归一：amap 数据为 GCJ-02（需 WGS→GCJ 转换）；osm/demo 为 WGS-84（原样使用） */
@@ -92,6 +101,13 @@ function parseCoords(u) {
   const lng = parseFloat(u.searchParams.get('lng'));
   if (!isFinite(lat) || !isFinite(lng)) return { lat: NaN, lng: NaN };
   return shopService.DATA_MODE === 'amap' ? wgs2gcj(lat, lng) : { lat, lng };
+}
+
+/** POST body 里的 id/tag 类字段统一收敛为字符串数组（脏数据不再引发 500） */
+function toStrArray(v) {
+  if (Array.isArray(v)) return [...new Set(v.map((x) => String(x).trim().slice(0, 64)).filter(Boolean))];
+  if (typeof v === 'string' && v.trim()) return [v.trim().slice(0, 64)];
+  return [];
 }
 
 async function handleApi(req, res, u) {
@@ -131,10 +147,10 @@ async function handleApi(req, res, u) {
     const wheel = await wheelService.buildWheel({
       lat: gcj.lat,
       lng: gcj.lng,
-      excludeIds: body.excludeIds,
-      maxPrice: body.maxPrice,
-      avoidTags: body.avoidTags,
-      blacklistIds: body.blacklistIds,
+      excludeIds: toStrArray(body.excludeIds),
+      maxPrice: Number(body.maxPrice) > 0 ? Number(body.maxPrice) : 0,
+      avoidTags: toStrArray(body.avoidTags),
+      blacklistIds: toStrArray(body.blacklistIds),
     });
     return send(res, 200, wheel);
   }
@@ -150,14 +166,17 @@ async function handleApi(req, res, u) {
   }
 
   if (req.method === 'GET' && p === '/api/orders') {
-    return send(res, 200, { orders: orderService.list() });
+    const cid = (u.searchParams.get('cid') || '').slice(0, 64);
+    return send(res, 200, { orders: orderService.list(cid) });
   }
 
   // 埋点上报（sendBeacon / fetch，失败静默）
+  // 只收客户端事件白名单：order_submit / cps_redirect 由服务端产生，防漏斗被伪造
   if (req.method === 'POST' && p === '/api/track') {
     try {
       const body = await readBody(req);
-      track.track(String(body.event || ''), body);
+      const event = String(body.event || '');
+      if (track.CLIENT_EVENTS.has(event)) track.track(event, body);
     } catch (err) {
       /* 埋点数据异常直接丢弃，不影响业务 */
     }
@@ -189,11 +208,17 @@ async function handleApi(req, res, u) {
     }
     const keywords = (u.searchParams.get('keywords') || '').trim();
     if (!keywords) return send(res, 200, { suggestions: [] });
+    const biasLat = parseFloat(u.searchParams.get('lat'));
+    const biasLng = parseFloat(u.searchParams.get('lng'));
+    // amap 侧 location 需要 GCJ-02（与 parseCoords 同规则）；osm/Photon 用 WGS-84 原样
+    const bias = isFinite(biasLat) && isFinite(biasLng)
+      ? (shopService.DATA_MODE === 'amap' ? wgs2gcj(biasLat, biasLng) : { lat: biasLat, lng: biasLng })
+      : null;
     try {
       const suggestions =
         shopService.DATA_MODE === 'amap'
-          ? await shopService.suggest(keywords, u.searchParams.get('city'))
-          : await shopService.suggestOsm(keywords);
+          ? await shopService.suggest(keywords, u.searchParams.get('city'), bias)
+          : await shopService.suggestOsm(keywords, bias);
       return send(res, 200, { suggestions });
     } catch (err) {
       return apiError(res, err);
