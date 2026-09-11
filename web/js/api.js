@@ -68,7 +68,7 @@ export const api = {
   async shops(q = {}) {
     if (STATIC) {
       const lat = parseFloat(q.lat) || 39.9087, lng = parseFloat(q.lng) || 116.4614;
-      const shops = await fetchShops(lat, lng, 3000);
+      const shops = await fetchShops(lat, lng);
       return { shops: filterShops(shops, q) };
     }
     return req(`/api/shops?${new URLSearchParams(clean(q))}`);
@@ -76,7 +76,7 @@ export const api = {
   async shop(id, q = {}) {
     if (STATIC) {
       const lat = parseFloat(q.lat) || 39.9087, lng = parseFloat(q.lng) || 116.4614;
-      const shops = await fetchShops(lat, lng, 3000);
+      const shops = await fetchShops(lat, lng);
       const found = shops.find((s) => s.id === id);
       if (!found) { const err = new Error('店铺不存在'); err.code = 'SHOP_NOT_FOUND'; throw err; }
       return { shop: { ...found, license: null, dishes: [] } };
