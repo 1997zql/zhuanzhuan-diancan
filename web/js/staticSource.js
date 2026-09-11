@@ -7,7 +7,8 @@ const OVERPASS_ENDPOINTS = [
 ];
 const PHOTON = 'https://photon.komoot.io';
 
-const cache = new Map(); // gridKey → { list, ts }
+const RADIUS = 1500; // 午餐步行圈：查询快（数据量降 75%）且够用
+const cache = new Map();
 const TTL = 10 * 60 * 1000;
 
 const OSM_CUISINE_RULES = [
@@ -98,42 +99,51 @@ function mapElement(el, lat, lng) {
   };
 }
 
+async function fetchOne(ep, q) {
+  const ac = new AbortController();
+  const timer = setTimeout(() => ac.abort(), 20000);
+  try {
+    const res = await fetch(ep, {
+      method: 'POST',
+      body: 'data=' + encodeURIComponent(q),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      signal: ac.signal,
+    });
+    if (!res.ok) throw new Error(`Overpass HTTP ${res.status}`);
+    const data = await res.json();
+    if (!data.elements || data.elements.length === 0) throw new Error('empty');
+    return data.elements;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function fetchOverpass(lat, lng, radius) {
-  const q = `[out:json][timeout:25];
+  const q = `[out:json][timeout:15];
 (
   node["amenity"~"^(restaurant|fast_food|cafe|food_court)$"](around:${radius},${lat},${lng});
   way["amenity"~"^(restaurant|fast_food|cafe|food_court)$"](around:${radius},${lat},${lng});
 );
-out center 60;`;
-  let lastErr = null;
-  for (const ep of OVERPASS_ENDPOINTS) {
-    const ac = new AbortController();
-    const timer = setTimeout(() => ac.abort(), 25000);
-    try {
-      const res = await fetch(ep, {
-        method: 'POST',
-        body: 'data=' + encodeURIComponent(q),
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        signal: ac.signal,
-      });
-      clearTimeout(timer);
-      if (!res.ok) { lastErr = new Error(`Overpass HTTP ${res.status}`); continue; }
-      const data = await res.json();
-      return data.elements || [];
-    } catch (e) {
-      clearTimeout(timer);
-      lastErr = e;
-    }
-  }
-  throw lastErr || new Error('Overpass 不可用');
+out center 40;`;
+  // 双镜像竞速：谁先返回有效数据用谁
+  return Promise.any(ENDPOINTS.map((ep) => fetchOne(ep, q))).catch(() => null);
 }
 
 /** 周边真实店铺（带网格缓存） */
-export async function fetchShops(lat, lng, radius = 3000) {
+export async function fetchShops(lat, lng, radius = RADIUS) {
   const key = `${lat.toFixed(3)},${lng.toFixed(3)}`;
   const hit = cache.get(key);
   if (hit && Date.now() - hit.ts < TTL) return hit.list;
-  const elements = await fetchOverpass(lat, lng, radius);
+  // sessionStorage：刷新页面不重复查询
+  try {
+    const ss = sessionStorage.getItem('zzdc.osm.' + key);
+    if (ss) {
+      const saved = JSON.parse(ss);
+      if (Date.now() - saved.ts < TTL) { cache.set(key, { list: saved.list, ts: saved.ts }); return saved.list; }
+    }
+  } catch (e) { /* 忽略 */ }
+  const elements = (await fetchOverpass(lat, lng, radius)) || [];
+  if (elements.length === 0) throw new Error('周边暂无 OpenStreetMap 餐饮数据');
   const seen = new Set();
   const list = elements
     .map((el) => mapElement(el, lat, lng))
@@ -142,6 +152,7 @@ export async function fetchShops(lat, lng, radius = 3000) {
     .filter((s) => s.distanceM <= radius)
     .sort((a, b) => a.distanceM - b.distanceM);
   cache.set(key, { list, ts: Date.now() });
+  try { sessionStorage.setItem('zzdc.osm.' + key, JSON.stringify({ list, ts: Date.now() })); } catch (e) { /* 忽略 */ }
   return list;
 }
 
@@ -199,13 +210,13 @@ function shuffle(arr) {
 
 /** 转盘候选生成（与服务端 wheelService 同构）：加权随机 + 品类降级 */
 export async function buildWheelStatic({ lat, lng, excludeIds = [], maxPrice = 0, avoidTags = [], blacklistIds = [] }) {
-  const all = await fetchShops(lat, lng, 3000);
+  const all = await fetchShops(lat, lng, RADIUS);
   const exclude = new Set([].concat(excludeIds || [], blacklistIds || []));
   const avoid = new Set(avoidTags || []);
   const mp = Number(maxPrice) > 0 ? Number(maxPrice) : 0;
 
   const pool = all
-    .filter((s) => s.distanceM <= 3000 && s.openStatus !== 'closed')
+    .filter((s) => s.distanceM <= RADIUS && s.openStatus !== 'closed')
     .filter((s) => !exclude.has(s.id))
     .filter((s) => !(mp > 0 && s.avgPrice != null && s.avgPrice > mp))
     .filter((s) => ![...avoid].some((t) => s.tags.includes(t)));
@@ -219,7 +230,7 @@ export async function buildWheelStatic({ lat, lng, excludeIds = [], maxPrice = 0
   const okCuisines = new Set(pool.map((s) => s.cuisine));
   const byCuisine = new Map();
   for (const s of all) {
-    if (s.distanceM > 3000 || s.openStatus === 'closed') continue;
+    if (s.distanceM > RADIUS || s.openStatus === 'closed') continue;
     if (!okCuisines.has(s.cuisine) || byCuisine.has(s.cuisine)) continue;
     byCuisine.set(s.cuisine, { type: 'category', cuisine: s.cuisine, emoji: s.emoji });
   }

@@ -60,7 +60,7 @@ export function openAddressSheet(onChange) {
       <span style="color:#adb5bd">›</span>
     </button>
     ${rows}
-    <div class="me-note">${isAmap() ? '店铺数据来自高德地图（餐饮 POI，营业中 + 3 公里内）。' : isOsm() ? '店铺数据来自 OpenStreetMap 开放数据（周边 3 公里真实餐饮）。' : '演示数据覆盖：国贸CBD / 望京SOHO / 中关村 周边 3 公里。'}</div>
+    <div class="me-note">${isAmap() ? '店铺数据来自高德地图（餐饮 POI，营业中 + 3 公里内）。' : isOsm() ? '店铺数据来自 OpenStreetMap 开放数据（周边 1.5 公里真实餐饮）。' : '演示数据覆盖：国贸CBD / 望京SOHO / 中关村 周边 3 公里。'}</div>
   `);
 
   if (isAmap() || isOsm()) bindAddressSearch();

@@ -19,7 +19,7 @@ function staticMeta() {
     ],
     cuisines: ['中餐', '日料', '西式', '快餐西式', '咖啡', '茶饮甜品', '面食小吃', '烧烤', '韩式', '轻食', '亚洲料理'],
     avoidTags: [],
-    radius: 3000,
+    radius: 1500,
   };
 }
 
