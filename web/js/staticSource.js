@@ -125,8 +125,17 @@ async function fetchOverpass(lat, lng, radius) {
   way["amenity"~"^(restaurant|fast_food|cafe|food_court)$"](around:${radius},${lat},${lng});
 );
 out center 40;`;
-  // 双镜像竞速：谁先返回有效数据用谁
-  return Promise.any(ENDPOINTS.map((ep) => fetchOne(ep, q))).catch(() => null);
+  // 双镜像竞速 + 失败重试一轮（公共镜像偶发 504/过载）
+  let lastErr = null;
+  for (let round = 0; round < 2; round++) {
+    if (round > 0) await new Promise((r) => setTimeout(r, 1500));
+    try {
+      return await Promise.any(ENDPOINTS.map((ep) => fetchOne(ep, q)));
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr || new Error('Overpass 不可用');
 }
 
 /** 周边真实店铺（带网格缓存） */
