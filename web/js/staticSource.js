@@ -130,7 +130,7 @@ out center 40;`;
   for (let round = 0; round < 2; round++) {
     if (round > 0) await new Promise((r) => setTimeout(r, 1500));
     try {
-      return await Promise.any(ENDPOINTS.map((ep) => fetchOne(ep, q)));
+      return await Promise.any(OVERPASS_ENDPOINTS.map((ep) => fetchOne(ep, q)));
     } catch (e) {
       lastErr = e;
     }
