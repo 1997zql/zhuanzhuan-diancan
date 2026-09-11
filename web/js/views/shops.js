@@ -75,8 +75,8 @@ function itemHtml(s) {
       <div class="emoji-box">${s.emoji}</div>
       <div class="info">
         <div class="name-row"><span class="name">${esc(s.name)}</span>${badges}</div>
-        <div class="sub">★${s.rating ?? '暂无'}${s.monthlySales != null ? ` · 月售${s.monthlySales}` : ''} · ${esc(s.cuisine)}</div>
-        <div class="meta">人均${fmtOr(s.avgPrice)}${s.deliveryFee != null ? ` · 配送费${fmt(s.deliveryFee)}` : ''}${s.deliveryMinutes != null ? ` · 约${s.deliveryMinutes}分钟` : ''}</div>
+        <div class="sub">${s.rating != null ? `★${s.rating} · ` : ''}${esc(s.cuisine)}${s.address ? ' · ' + esc(s.address) : ''}</div>
+        <div class="meta">${s.avgPrice != null ? `人均${fmt(s.avgPrice)}` : '人均未收录'} · 约${s.deliveryMinutes ?? Math.max(10, Math.round(s.distanceM / 200 + 10))}分钟可达</div>
       </div>
       <div class="right">
         <div class="dist">${distText(s.distanceM)}</div>

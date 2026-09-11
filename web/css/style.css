@@ -545,3 +545,34 @@ a { color: inherit; text-decoration: none; }
   cursor: pointer;
   border-bottom: 1px solid #f3e2a9;
 }
+
+/* ===== 转盘加载态 ===== */
+.wheel-zone.loading canvas { opacity: 0.35; filter: grayscale(0.5); }
+.wheel-zone.loading .hub { display: none; }
+.wheel-zone.loading::after {
+  content: '正在搜索周边真实餐馆…';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+  z-index: 4;
+}
+
+/* ===== hero 光斑装饰 ===== */
+.hero { position: relative; overflow: hidden; }
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  pointer-events: none;
+}
+.hero::before { width: 230px; height: 230px; top: -90px; right: -70px; }
+.hero::after { width: 170px; height: 170px; bottom: -80px; left: -60px; background: rgba(255, 255, 255, 0.09); }
+.hero > * { position: relative; z-index: 1; }

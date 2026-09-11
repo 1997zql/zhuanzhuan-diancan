@@ -68,7 +68,8 @@ function poolMetaText(d) {
 async function loadSectors(autoSpin) {
   const loc = runtime.location;
   hideEmpty();
-  setMeta('正在加载附近店铺…');
+  setMeta('正在搜索周边真实餐馆…');
+  document.querySelector('.wheel-zone')?.classList.add('loading');
   try {
     wheelData = await api.wheel({
       lat: loc.lat,
@@ -79,6 +80,7 @@ async function loadSectors(autoSpin) {
       blacklistIds: prefs.blacklist.map((b) => b.id),
     });
   } catch (e) {
+    document.querySelector('.wheel-zone')?.classList.remove('loading');
     const z = document.querySelector('.wheel-zone');
     const a = document.querySelector('.hero-actions');
     if (z) z.style.display = 'none';
@@ -91,6 +93,7 @@ async function loadSectors(autoSpin) {
 
   const d = wheelData;
   const zone = document.querySelector('.wheel-zone');
+  zone?.classList.remove('loading');
   const actions = document.querySelector('.hero-actions');
 
   if (d.mode === 'empty') {
