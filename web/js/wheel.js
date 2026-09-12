@@ -1,7 +1,8 @@
 // Canvas 随机转盘：扇区绘制 / 缓动动画 / 落点计算 / 转动音效
 import { sfx } from './ui.js?v=c5a29c5';
 
-const PALETTE = ['#FF7A45', '#FFB84D', '#4DABF7', '#69DB7C', '#B197FC', '#FF8FAB', '#3BC9DB', '#FFA94D'];
+// 奶油芝士双色转盘：陶土红 / 奶油白交替，白字与可可字分别适配
+const PALETTE = ['#E4572E', '#FFF3E2', '#EF8354', '#FFF3E2', '#E4572E', '#FFF3E2', '#F2994A', '#FFF3E2'];
 const TAU = Math.PI * 2;
 
 // rAF 在部分嵌入式 WebView / 后台标签中不触发：首次转动前探测一次，
@@ -88,23 +89,29 @@ export class Wheel {
       const s = this.sectors[i];
       const label = s.type === 'shop' ? s.shop.short || s.shop.name : s.cuisine;
       const emoji = s.type === 'shop' ? s.shop.emoji : s.emoji;
+      const onCream = PALETTE[i % PALETTE.length] === '#FFF3E2';
       ctx.save();
       ctx.translate(c, c);
       ctx.rotate(a0 + seg / 2);
       ctx.textAlign = 'center';
-      ctx.fillStyle = '#fff';
-      ctx.font = '600 11px -apple-system, "PingFang SC", sans-serif';
+      ctx.fillStyle = onCream ? '#8a5a3b' : '#ffffff';
+      ctx.font = '700 11px -apple-system, "PingFang SC", sans-serif';
       ctx.fillText(label, R * 0.44, 4, R * 0.5);
       ctx.font = '18px serif';
       ctx.fillText(emoji, R * 0.72, 6);
       ctx.restore();
     }
 
-    // 外圈描边
+    // 外圈描边：白环 + 内侧细可可线，精致感
     ctx.beginPath();
-    ctx.arc(c, c, R, 0, TAU);
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+    ctx.arc(c, c, R - 1, 0, TAU);
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#ffffff';
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(c, c, R - 3.5, 0, TAU);
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = 'rgba(61, 44, 30, 0.35)';
     ctx.stroke();
   }
 
