@@ -86,9 +86,8 @@ export async function render(root) {
 
     <div class="card me-section">
       <h3>关于</h3>
-      <div class="about-row">${amapMode ? '转转点餐 V1.1 · 店铺数据来自高德地图（AMAP_KEY 已配置）' : '转转点餐 V1.0（MVP）· 演示数据覆盖北京三大商圈周边 3 公里'}</div>
-      <div class="about-row">下单与支付均为模拟，不产生真实交易</div>
-      <div class="about-row">产品依据：MRD.md · 开发计划.md</div>
+      <div class="about-row">${amapMode ? '转转点餐 · 店铺数据来自高德地图' : runtime.meta.dataMode === 'osm' ? '转转点餐 · 店铺数据来自 OpenStreetMap 开放数据' : '转转点餐 · 演示数据覆盖北京三大商圈'}</div>
+      <div class="about-row">${runtime.meta.dataMode === 'demo' ? '下单与支付均为模拟，不产生真实交易' : '下单跳转至外卖平台完成，本站不收取任何费用'}</div>
     </div>`;
 
   document.getElementById('gpsRow').addEventListener('click', async () => {

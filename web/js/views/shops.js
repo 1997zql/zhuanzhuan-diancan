@@ -54,9 +54,17 @@ async function loadList() {
   });
   const listEl = document.getElementById('shopList');
   if (!listEl) return;
+  // 同名连锁只保留最近一家：决定"吃什么"时，就近分店才是有效选项
+  const byName = new Map();
+  const visible = [];
+  for (const s of shops) {
+    if (byName.has(s.name)) continue;
+    byName.set(s.name, s);
+    visible.push(s);
+  }
   listEl.innerHTML =
-    shops.length > 0
-      ? shops.map(itemHtml).join('')
+    visible.length > 0
+      ? visible.map(itemHtml).join('')
       : `<div class="card empty-card"><div class="big">🔍</div><h3>没有符合条件的店铺</h3><p>试试放宽筛选，或在顶栏切换地址</p></div>`;
 
   listEl.querySelectorAll('.shop-item').forEach((el) =>
@@ -76,7 +84,7 @@ function itemHtml(s) {
       <div class="info">
         <div class="name-row"><span class="name">${esc(s.name)}</span>${badges}</div>
         <div class="sub">${s.rating != null ? `★${s.rating} · ` : ''}${esc(s.cuisine)}${s.address ? ' · ' + esc(s.address) : ''}</div>
-        <div class="meta">${s.avgPrice != null ? `人均${fmt(s.avgPrice)}` : '人均未收录'} · 约${s.deliveryMinutes ?? Math.max(10, Math.round(s.distanceM / 200 + 10))}分钟可达</div>
+        <div class="meta">${s.avgPrice != null ? `人均${fmt(s.avgPrice)} · ` : ''}约${s.deliveryMinutes ?? Math.max(10, Math.round(s.distanceM / 200 + 10))}分钟可达</div>
       </div>
       <div class="right">
         <div class="dist">${distText(s.distanceM)}</div>

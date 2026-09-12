@@ -18,7 +18,7 @@ export async function render(root) {
          🙂 不满意可「排除此店再转」（单次最多 5 家），或一键换一批。<br>
          🛵 暂未接入菜单与配送：转到后复制店名，去美团 / 饿了么下单。`
       : mode === 'osm'
-        ? `🎯 店铺来自<b>OpenStreetMap 开放数据</b>：周边 1.5 公里内真实餐饮店（评分/营业信息可能缺失，首次加载约数秒）。<br>
+        ? `🎯 店铺来自<b>OpenStreetMap 开放数据</b>：周边真实餐饮店（评分/营业信息可能缺失，首次加载约数秒）。<br>
            🙂 不满意可「排除此店再转」（单次最多 5 家），或一键换一批。<br>
            🛵 下单：跳转淘宝闪购 / 外卖平台搜索店名下单。`
         : `🎯 转盘只放<b>当前真实可下单</b>的附近店铺，高分店与新店有适度加权。<br>
@@ -238,7 +238,13 @@ function showResult(shop, category) {
     shop.openStatus === 'closingSoon' ? '<span class="badge b-closing">即将打烊</span>' : '',
   ].join('');
   const statLine = isPoi
-    ? `${distText(shop.distanceM)} · 人均${fmtOr(shop.avgPrice)}${shop.rating != null ? ` · ★${shop.rating}` : ''}`
+    ? [
+        distText(shop.distanceM),
+        shop.avgPrice != null ? `人均${fmt(shop.avgPrice)}` : '',
+        shop.rating != null ? `★${shop.rating}` : '',
+      ]
+        .filter(Boolean)
+        .join(' · ')
     : `${distText(shop.distanceM)} · 人均${fmt(shop.avgPrice)} · 配送费${fmt(shop.deliveryFee)} · 约${shop.deliveryMinutes}分钟`;
 
   const mask = openSheet(`
@@ -247,7 +253,7 @@ function showResult(shop, category) {
       <div class="emoji-big">${shop.emoji}</div>
       <div style="flex:1;min-width:0">
         <div class="name">${esc(shop.name)} ${badges}</div>
-        <div class="sub">★${shop.rating ?? '暂无评分'} · ${esc(shop.cuisine)}</div>
+        <div class="sub">${shop.rating != null ? `★${shop.rating} · ` : ''}${esc(shop.cuisine)}</div>
         <div class="sub">${statLine}</div>
       </div>
     </div>
@@ -353,7 +359,14 @@ function shareCard(shop) {
   ctx.font = '800 46px -apple-system, "PingFang SC", sans-serif';
   ctx.fillText(shop.short || shop.name, 300, 440, 500);
   ctx.font = '28px -apple-system, "PingFang SC", sans-serif';
-  ctx.fillText(`★${shop.rating ?? '暂无评分'} · 人均${fmtOr(shop.avgPrice)} · ${shop.cuisine}`, 300, 500);
+  const shareStat = [
+    shop.rating != null ? `★${shop.rating}` : '',
+    shop.avgPrice != null ? `人均${fmt(shop.avgPrice)}` : '',
+    shop.cuisine,
+  ]
+    .filter(Boolean)
+    .join(' · ');
+  ctx.fillText(shareStat, 300, 500, 520);
   ctx.font = '26px -apple-system, "PingFang SC", sans-serif';
   ctx.fillText(`距你 ${distText(shop.distanceM)}${shop.deliveryMinutes != null ? ` · 约${shop.deliveryMinutes}分钟送达` : ''}`, 300, 552);
 

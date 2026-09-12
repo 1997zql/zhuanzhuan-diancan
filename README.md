@@ -123,6 +123,14 @@ CPS_SOURCE_ID=mm_xxx_xxx_xxx
 - `onrender.com` 域名在国内可访问但速度一般；用户量验证后再走「域名 + ICP 备案 + 国内云」的正经路径；
 - 内存中的订单/统计重启会丢（事件漏斗有 JSONL 持久化，但免费档无持久磁盘，跨重启统计可能清零）。
 
+### 绑定自有域名（可选，推荐）
+
+买好域名后（阿里云 / 腾讯云 / Cloudflare 均可，`.com` 即可）：
+
+1. Render Dashboard → 你的服务 → Settings → Custom Domains → Add Custom Domain，填入域名（如 `www.xxx.com`）；
+2. 到域名注册商的 DNS 管理里，按 Render 提示加一条 CNAME 记录（默认指向 `你的应用.onrender.com`）；
+3. 证书自动签发，无需其它配置——分享卡片元信息（og:url / og:image）由服务端按请求域名自动注入，换域名分享链接自动跟随。
+
 ## 项目结构
 
 ```

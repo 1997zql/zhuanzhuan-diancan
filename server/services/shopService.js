@@ -207,23 +207,25 @@ async function amapList(lat, lng) {
 
 // ===== osm 模式（OpenStreetMap 开放数据，WGS-84，无需注册）=====
 
-/** OSM cuisine/amenity 标签 → 统一品类与 emoji */
+/** OSM cuisine/amenity/店名 → 统一品类与 emoji */
 const OSM_CUISINE_RULES = [
-  [/japanese|sushi|ramen/, '日料', '🍣'],
-  [/italian|pizza|pasta/, '西式', '🍝'],
-  [/burger/, '快餐西式', '🍔'],
-  [/coffee/, '咖啡', '☕'],
-  [/tea|bubble_tea/, '茶饮甜品', '🧋'],
-  [/kebab|barbecue|bbq/, '烧烤', '🍢'],
-  [/noodle|ramen|dumpling|noodles/, '面食小吃', '🍜'],
-  [/chinese|sichuan|cantonese|hot_pot|hotpot/, '中餐', '🍲'],
-  [/korean/, '韩式', '🍚'],
-  [/thai|vietnamese|asian/, '亚洲料理', '🍛'],
-  [/salad|vegetarian|vegan/, '轻食', '🥗'],
+  [/japanese|sushi|ramen/i, '日料', '🍣'],
+  [/italian|pizza|pasta/i, '西式', '🍝'],
+  [/burger/i, '快餐西式', '🍔'],
+  [/coffee/i, '咖啡', '☕'],
+  [/bubble_tea|tea_house|teahouse|boba/i, '茶饮甜品', '🧋'],
+  [/kebab|barbecue|bbq/i, '烧烤', '🍢'],
+  [/noodle|ramen|dumpling|noodles|rice_noodle/i, '面食小吃', '🍜'],
+  [/chinese|sichuan|cantonese|hunan|hot_pot|hotpot/i, '中餐', '🍲'],
+  [/korean/i, '韩式', '🍚'],
+  [/thai|vietnamese|asian/i, '亚洲料理', '🍛'],
+  [/salad|vegetarian|vegan/i, '轻食', '🥗'],
 ];
 
-function mapOsmCuisine(tags) {
-  const s = `${tags.cuisine || ''}${tags.amenity || ''}`;
+function mapOsmCuisine(tags, name) {
+  // 店名并入匹配：OSM 国内 cuisine 标签稀疏，"GuiLin Rice Noodles" 这类
+  // 英文名店靠名字才能落到正确品类
+  const s = `${tags.cuisine || ''}${tags.amenity || ''}${name || ''}`;
   for (const [re, label, emoji] of OSM_CUISINE_RULES) {
     if (re.test(s)) return { label, emoji };
   }
@@ -241,7 +243,8 @@ function shortOsmName(name) {
 /** Overpass element → Shop 摘要（sourcedFrom='poi'，复用前端 POI 展示与下单引导） */
 function mapOsmElement(el, lat, lng) {
   const tags = el.tags || {};
-  const name = tags.name || tags["name:zh"] || tags["name:en"];
+  // 国内 OSM 的 name 常是拼音/英文，优先取中文标签，避免转盘转出"Najia Xiaoguan"
+  const name = tags["name:zh"] || tags["name:zh-Hans"] || tags.name || tags["name:en"];
   if (!name) return null;
   const shopLat = el.lat ?? el.center?.lat;
   const shopLng = el.lon ?? el.center?.lon;
@@ -254,7 +257,7 @@ function mapOsmElement(el, lat, lng) {
     return { openTime: pad(m[1], m[2]), closeTime: pad(m[3], m[4]) };
   })();
   const st = statusOf(openTime, closeTime);
-  const cuisine = mapOsmCuisine(tags);
+  const cuisine = mapOsmCuisine(tags, name);
   const address = [tags["addr:street"], tags["addr:housenumber"]].filter(Boolean).join('') || null;
 
   return {

@@ -12,21 +12,22 @@ const cache = new Map();
 const TTL = 10 * 60 * 1000;
 
 const OSM_CUISINE_RULES = [
-  [/japanese|sushi|ramen/, '日料', '🍣'],
-  [/italian|pizza|pasta/, '西式', '🍝'],
-  [/burger/, '快餐西式', '🍔'],
-  [/coffee/, '咖啡', '☕'],
-  [/tea|bubble_tea/, '茶饮甜品', '🧋'],
-  [/kebab|barbecue|bbq/, '烧烤', '🍢'],
-  [/noodle|dumpling/, '面食小吃', '🍜'],
-  [/chinese|sichuan|cantonese|hot_pot|hotpot/, '中餐', '🍲'],
-  [/korean/, '韩式', '🍚'],
-  [/thai|vietnamese|asian/, '亚洲料理', '🍛'],
-  [/salad|vegetarian|vegan/, '轻食', '🥗'],
+  [/japanese|sushi|ramen/i, '日料', '🍣'],
+  [/italian|pizza|pasta/i, '西式', '🍝'],
+  [/burger/i, '快餐西式', '🍔'],
+  [/coffee/i, '咖啡', '☕'],
+  [/bubble_tea|tea_house|teahouse|boba/i, '茶饮甜品', '🧋'],
+  [/kebab|barbecue|bbq/i, '烧烤', '🍢'],
+  [/noodle|ramen|dumpling|noodles|rice_noodle/i, '面食小吃', '🍜'],
+  [/chinese|sichuan|cantonese|hunan|hot_pot|hotpot/i, '中餐', '🍲'],
+  [/korean/i, '韩式', '🍚'],
+  [/thai|vietnamese|asian/i, '亚洲料理', '🍛'],
+  [/salad|vegetarian|vegan/i, '轻食', '🥗'],
 ];
 
-function mapCuisine(tags) {
-  const s = `${tags.cuisine || ''}${tags.amenity || ''}`;
+function mapCuisine(tags, name) {
+  // 店名并入匹配：OSM 国内 cuisine 标签稀疏，英文名店靠名字才能落到正确品类
+  const s = `${tags.cuisine || ''}${tags.amenity || ''}${name || ''}`;
   for (const [re, label, emoji] of OSM_CUISINE_RULES) {
     if (re.test(s)) return { label, emoji };
   }
@@ -60,7 +61,8 @@ function statusOf(openTime, closeTime) {
 
 function mapElement(el, lat, lng) {
   const tags = el.tags || {};
-  const name = tags.name || tags['name:zh'] || tags['name:en'];
+  // 国内 OSM 的 name 常是拼音/英文，优先取中文标签
+  const name = tags['name:zh'] || tags['name:zh-Hans'] || tags.name || tags['name:en'];
   if (!name) return null;
   const sLat = el.lat ?? el.center?.lat;
   const sLng = el.lon ?? el.center?.lon;
@@ -69,7 +71,7 @@ function mapElement(el, lat, lng) {
   const openTime = oh ? `${oh[1].padStart(2, '0')}:${oh[2]}` : null;
   const closeTime = oh ? `${oh[3].padStart(2, '0')}:${oh[4]}` : null;
   const st = statusOf(openTime, closeTime);
-  const cuisine = mapCuisine(tags);
+  const cuisine = mapCuisine(tags, name);
   const short = (name.replace(/[（(].*?[)）]/g, '').trim() || name).slice(0, 5);
   return {
     id: 'o' + (el.type || 'n') + el.id,

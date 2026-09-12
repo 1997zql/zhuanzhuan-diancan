@@ -51,7 +51,11 @@ function shuffle(arr) {
 async function buildWheel(opts = {}) {
   const pool = await shopService.wheelPool(opts);
   if (pool.length >= SECTOR_MIN) {
-    const picked = weightedSample(pool, Math.min(SECTOR_MAX, pool.length));
+    // 扇区重名去重：同名店铺只保留距离最近的一家，避免转盘出现多个"星巴克"
+    const byShort = new Map();
+    for (const s of pool) if (!byShort.has(s.short)) byShort.set(s.short, s);
+    const deduped = [...byShort.values()];
+    const picked = weightedSample(deduped, Math.min(SECTOR_MAX, deduped.length));
     return { mode: 'shop', sectors: picked.map((s) => ({ type: 'shop', shop: s })), poolSize: pool.length };
   }
 

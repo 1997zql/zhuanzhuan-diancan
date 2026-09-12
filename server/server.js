@@ -244,7 +244,16 @@ async function handleApi(req, res, u) {
   return send(res, 404, { error: 'NOT_FOUND', message: '接口不存在' });
 }
 
-function staticFile(res, u) {
+/** 分享元信息注入：把 index.html 里的 __OG_BASE__ 替换为本次请求的绝对地址，
+ *  og:url / og:image 必须是绝对 URL 才能被微信、Telegram 等抓取成卡片 */
+function ogBaseOf(req) {
+  const host = (req.headers['x-forwarded-host'] || req.headers.host || 'localhost').split(',')[0].trim();
+  const proto = (req.headers['x-forwarded-proto'] || '').split(',')[0].trim()
+    || (/^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(host) ? 'http' : 'https');
+  return `${proto}://${host}`;
+}
+
+function staticFile(res, u, req) {
   const reqPath = u.pathname === '/' ? '/index.html' : decodeURIComponent(u.pathname);
   const file = path.normalize(path.join(WEB_DIR, reqPath));
   if (!file.startsWith(WEB_DIR)) return send(res, 403, { error: 'FORBIDDEN' });
@@ -256,17 +265,18 @@ function staticFile(res, u) {
         return fs.readFile(path.join(WEB_DIR, 'index.html'), (e2, b2) => {
           if (e2) return send(res, 404, 'Not Found', 'text/plain; charset=utf-8');
           res.writeHead(200, { 'Content-Type': MIME['.html'], 'Cache-Control': 'no-store' });
-          res.end(b2);
+          res.end(b2.toString('utf8').replace(/__OG_BASE__/g, ogBaseOf(req)));
         });
       }
       return send(res, 404, 'Not Found', 'text/plain; charset=utf-8');
     }
     const ext = path.extname(file).toLowerCase();
+    const body = ext === '.html' ? buf.toString('utf8').replace(/__OG_BASE__/g, ogBaseOf(req)) : buf;
     res.writeHead(200, {
       'Content-Type': MIME[ext] || 'application/octet-stream',
       'Cache-Control': ext === '.html' ? 'no-store' : 'no-cache',
     });
-    res.end(buf);
+    res.end(body);
   });
 }
 
@@ -275,7 +285,7 @@ const server = http.createServer(async (req, res) => {
   try {
     if (req.method === 'OPTIONS') return send(res, 204, '');
     if (u.pathname.startsWith('/api/')) return await handleApi(req, res, u);
-    return staticFile(res, u);
+    return staticFile(res, u, req);
   } catch (err) {
     return apiError(res, err);
   }
